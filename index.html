@@ -1,0 +1,2521 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Kovács Attila Máté">
+<title>Besenyő János publikációi</title>
+<style>
+:root{--bg:#fbfaf8;--fg:#1a1a1a;--muted:#6b6560;--line:#e0dbd4;--accent:#7a2e2e;
+ --chip:#efece7;--ok:#2d6a4f;--warn:#8a5a00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Georgia,"Times New Roman",serif}
+header{border-bottom:2px solid var(--fg);padding:28px 20px 18px;max-width:1100px;margin:0 auto}
+h1{margin:0;font-size:26px}
+.sub{color:var(--muted);font-size:14px;margin-top:6px}
+main{max-width:1100px;margin:0 auto;padding:20px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+input,select,textarea,button{font:14px system-ui,-apple-system,"Segoe UI",sans-serif;padding:8px 10px;
+ border:1px solid var(--line);background:#fff;border-radius:3px;color:var(--fg)}
+input[type=search]{flex:1 1 260px}
+button{cursor:pointer;background:var(--fg);color:#fff;border-color:var(--fg)}
+button.ghost{background:#fff;color:var(--fg)}
+button.big{font-size:15px;padding:11px 18px}
+button:disabled{opacity:.45;cursor:not-allowed}
+.stats{font:13px system-ui,sans-serif;color:var(--muted);border-top:1px solid var(--line);
+ border-bottom:1px solid var(--line);padding:8px 0;margin-bottom:18px}
+ol.list{list-style:none;margin:0;padding:0}
+li.pub{padding:16px 0;border-bottom:1px solid var(--line)}
+.yr{font:700 12px system-ui,sans-serif;color:var(--accent);letter-spacing:.08em}
+.ttl{font-size:17px;margin:3px 0 5px;font-weight:700}
+.ttl a{color:inherit}
+.au{color:var(--muted);font-size:14px}
+.src{font-size:14px;margin-top:4px;white-space:pre-line}
+.meta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:11px system-ui,sans-serif;background:var(--chip);padding:3px 8px;border-radius:2px;color:var(--muted)}
+.chip.cit{background:#f2e8e8;color:var(--accent)}
+.panel{max-width:1100px;margin:0 auto 60px;padding:20px;border-top:2px solid var(--fg)}
+.panel h2{font-size:19px;margin:22px 0 8px}
+textarea{width:100%;min-height:150px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+.grid{display:grid;grid-template-columns:160px 1fr;gap:8px;align-items:center;margin:10px 0;font-size:13px}
+.grid input,.grid textarea{width:100%}
+.grid textarea{min-height:70px}
+.rows{max-height:340px;overflow:auto;border:1px solid var(--line);background:#fff}
+.row{padding:7px 10px;border-bottom:1px solid var(--line);cursor:pointer;font:13px system-ui,sans-serif}
+.row:hover{background:var(--chip)}
+.row.sel{background:#f2e8e8}
+.note{font:13px system-ui,sans-serif;color:var(--muted);margin:8px 0}
+.empty{padding:50px 0;text-align:center;color:var(--muted)}
+.state{font:13px system-ui,sans-serif;padding:10px 12px;border-radius:3px;margin:10px 0;
+ border:1px solid var(--line);background:#fff}
+.state.ok{border-color:var(--ok);color:var(--ok)}
+.state.warn{border-color:var(--warn);color:var(--warn)}
+.state.err{border-color:var(--accent);color:var(--accent)}
+.setup{background:#fff;border:1px solid var(--line);padding:16px;border-radius:3px}
+.setup ol{font:14px system-ui,sans-serif;padding-left:20px;line-height:1.7}
+code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="h1">Besenyő János publikációi</h1>
+  <div class="sub" id="h2">Tudományos közlemények jegyzéke</div>
+</header>
+
+<main>
+  <div class="bar">
+    <input type="search" id="q" placeholder="Keresés címben, szerzőben, forrásban">
+    <select id="fYear"><option value="">Minden év</option></select>
+    <select id="fType"><option value="">Minden típus</option></select>
+    <select id="sort">
+      <option value="year-desc">Év szerint, csökkenő</option>
+      <option value="year-asc">Év szerint, növekvő</option>
+      <option value="cit-desc">Idézettség szerint</option>
+      <option value="title">Cím szerint</option>
+    </select>
+    <button class="ghost" id="btnApa">APA lista</button>
+    <button class="ghost" id="btnBib">BibTeX</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <ol class="list" id="list"></ol>
+</main>
+
+<script type="application/json" id="db">[
+ {
+  "authors": [
+   "Besenyő, János",
+   "Kállai, Krisztina"
+  ],
+  "title": "Political violence",
+  "source": "In: Nesi, Hilary; Milin, Petar (szerk.) International Encyclopedia of Language and Linguistics (Third ed.)\nAmsterdam, Hollandia : Elsevier (2026) Paper: B9780443266294000095 , 6 p.",
+  "venue": "International Encyclopedia of Language and Linguistics (Third ed.)",
+  "year": 2026,
+  "type": "Könyvrészlet",
+  "subtype": "Szócikk (Könyvrészlet)",
+  "mtmt_id": "36177496",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Mayer, Adam"
+  ],
+  "title": "The Western Sahara Fiasco of 1899: Thwarted Colonial Aspirations of the Austro-Hungarian Empire on the African Continent",
+  "source": "HISTORY IN AFRICA , 25 p. (2026)",
+  "venue": "HISTORY IN AFRICA",
+  "year": 2026,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "37314315",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "East-South military alterglobalization in the Cold War and today: Hungary in Africa",
+  "source": "African Identities online pp. 1-17. , 17 p. (2026)",
+  "venue": "African Identities online pp. 1-17.",
+  "year": 2026,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "37511713",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Schneider, Richárd",
+   "Vogel, David",
+   "Besenyő, János"
+  ],
+  "title": "Peacekeeping From Above: Drone Intelligence in UN Peace Operations and the Case of MINUSCA",
+  "source": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 39 : 2 pp. 1-28. , 28 p. (2026)",
+  "venue": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 39 : 2 pp. 1-28.",
+  "year": 2026,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "36910534",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Sinkó, Gábor",
+   "Romaniuk, Scott N.",
+   "Besenyő, János"
+  ],
+  "title": "The challenges of rebuilding Somalia’s security forces: Counterinsurgency, political fragmentation and the transition from AMISOM to AUSSOM",
+  "source": "AFRICAN SECURITY REVIEW , 15 p. (2026)",
+  "venue": "AFRICAN SECURITY REVIEW",
+  "year": 2026,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "37350498",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Somogyi, Tamás",
+   "Besenyő, János",
+   "Nagy, Rudolf"
+  ],
+  "title": "Climate change risk management in the banking industry - case study of South Africa and Kenya",
+  "source": "INTERDISCIPLINARY DESCRIPTION OF COMPLEX SYSTEMS 24 : 5 pp. 664-676. , 13 p. (2026)",
+  "venue": "INTERDISCIPLINARY DESCRIPTION OF COMPLEX SYSTEMS 24 : 5 pp. 664-676.",
+  "year": 2026,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "37361486",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Szűcs, Gábor",
+   "Besenyő, János"
+  ],
+  "title": "Wastewater and Terrorism",
+  "source": "In: Kovács, Tünde Anna; Stadler, Róbert Gábor; Daruka, Norbert (szerk.) Water as a Cardinal Area of Critical Infrastructure Protection : Proceedings of the 6th International Conference on Central European Critical Infrastructure Protection (ICCECIP 2024), Budapest, Hungary\nCham, Svájc : Springer Nature (2026) 566 p. pp. 479-489. Paper: Chapter 36 , 11 p.",
+  "venue": "Water as a Cardinal Area of Critical Infrastructure Protection : Proceedings of the 6th International Conference on Central European Critical Infrastructure Protection (ICCECIP 2024), Budapest, Hungary",
+  "year": 2026,
+  "type": "Könyvrészlet",
+  "subtype": "Konferenciaközlemény (Könyvrészlet)",
+  "mtmt_id": "37325001",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Trembeczki, László",
+   "Besenyő, János",
+   "Kobolka, István"
+  ],
+  "title": "Navigating Pandemics in Defense Environments: A Comparative Analysis of Pre-, During and Post-COVID-19 Health Practices and Workplace Adaptations Among Employees of a Hungarian Defence Company",
+  "source": "JOURNAL OF OCCUPATIONAL AND ENVIRONMENTAL MEDICINE 68 : 1 pp. 97-103. , 7 p. (2026)",
+  "venue": "JOURNAL OF OCCUPATIONAL AND ENVIRONMENTAL MEDICINE 68 : 1 pp. 97-103.",
+  "year": 2026,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "36355279",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Evaluating the Africa - EU Partnership on Peace and Security. Interregional Cooperation in Peace Operations",
+  "source": "INTERNATIONAL PEACEKEEPING 32 : 3 pp. 708-710. , 3 p. (2025)",
+  "venue": "INTERNATIONAL PEACEKEEPING 32 : 3 pp. 708-710.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "35336001",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "New and Old Ideas: African Military Marxism",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 4 : 3-4 pp. 324-325. , 2 p. (2025)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 4 : 3-4 pp. 324-325.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "35734759",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Africa and the Russian-Ukrainian War and Its Impact on Africa",
+  "source": "In: Kovács, Tünde Anna; Stadler, Róbert Gábor; Daruka, Norbert (szerk.) The Impact of the Energy Dependency on Critical Infrastructure Protection : Proceedings of the 5th International Conference on Central European Critical Infrastructure Protection (ICCECIP 2023), Budapest, Hungary\nCham, Svájc : Springer Nature Switzerland (2025) 765 p. pp. 157-177. Paper: Chapter 12 , 21 p.",
+  "venue": "The Impact of the Energy Dependency on Critical Infrastructure Protection : Proceedings of the 5th International Conference on Central European Critical Infrastructure Protection (ICCECIP 2023), Budapest, Hungary",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Konferenciaközlemény (Könyvrészlet)",
+  "mtmt_id": "35806193",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Prevention of the Terror Attack and the Social Aspects in the European Union",
+  "source": "In: Kovács, Tünde Anna; Fürstner, Igor (szerk.) Critical Infrastructure Protection: Advanced Technologies for Crisis Prevention and Response\nDordrecht, Hollandia : Springer Netherlands (2025) pp. 41-59. Paper: Chapter 4 , 19 p.",
+  "venue": "Critical Infrastructure Protection: Advanced Technologies for Crisis Prevention and Response",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Konferenciaközlemény (Könyvrészlet)",
+  "mtmt_id": "36134460",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "African defence from an African perspective",
+  "source": "SMALL WARS AND INSURGENCIES online pp. 1-6. , 6 p. (2025)",
+  "venue": "SMALL WARS AND INSURGENCIES online pp. 1-6.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "36285847",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Őszi, Arnold"
+  ],
+  "title": "Sensing From the Skies: A Comprehensive Analysis of the Latest Sensors on Drones",
+  "source": "JOURNAL OF ROBOTICS 2025 : 1 pp. 1-9. Paper: 3896195 , 9 p. (2025)",
+  "venue": "JOURNAL OF ROBOTICS 2025 : 1 pp. 1-9. Paper: 3896195",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Összefoglaló cikk (Folyóiratcikk)",
+  "mtmt_id": "36294626",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 3,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János (szerk.)",
+   "Miletics, Péter (szerk.)"
+  ],
+  "title": "Niger Országismertető",
+  "source": "Budapest, Magyarország : Zrínyi Kiadó (2025) , 378 p.",
+  "venue": "Budapest, Magyarország : Zrínyi Kiadó",
+  "year": 2025,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "36302913",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Pákozdi, Nóra"
+  ],
+  "title": "Politikai rendszer",
+  "source": "In: Besenyő, János; Miletics, Péter (szerk.) Niger Országismertető\nBudapest, Magyarország : Zrínyi Kiadó (2025) 378 p. pp. 83-130. , 48 p.",
+  "venue": "Niger Országismertető",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "36302926",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Pákozdi, Nóra"
+  ],
+  "title": "Népesség és nyelv, civilizációs - kultúrális identitás és társadalom",
+  "source": "In: Besenyő, János; Miletics, Péter (szerk.) Niger Országismertető\nBudapest, Magyarország : Zrínyi Kiadó (2025) 378 p. pp. 131-172. , 42 p.",
+  "venue": "Niger Országismertető",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "36302943",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Pákozdi, Nóra"
+  ],
+  "title": "Oktatás, egészségügy",
+  "source": "In: Besenyő, János; Miletics, Péter (szerk.) Niger Országismertető\nBudapest, Magyarország : Zrínyi Kiadó (2025) 378 p. pp. 173-208. , 36 p.",
+  "venue": "Niger Országismertető",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "36302955",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Kállai, Krisztina"
+  ],
+  "title": "Psychological Impact of Globalization on Gender and Sustainability in Diaspora Study of Thai Women Living in Diaspora in Hungary",
+  "source": "In: Anshu, Aditya (szerk.) Navigating Globalization, Diaspora, Foreign Policy and Sustainability\nSingapore, Szingapúr : Springer Nature Singapore (2025) pp. 11-30. Paper: Chapter 2 , 20 p.",
+  "venue": "Navigating Globalization, Diaspora, Foreign Policy and Sustainability",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "36409502",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Spanish Republicans against the Nazis in World War II: Book Review: Churchill’s Spaniards: Continuing the Fight in the British Army 1939-46.",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES Volume 5 : Number 3 pp. 232-238. , 7 p. (2025)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES Volume 5 : Number 3 pp. 232-238.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "36432813",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Szabó, Zsolt"
+  ],
+  "title": "Russia and the Sahel",
+  "source": "In: Besenyő, János (szerk.) NATO’s Regional Challenges : Terrorism and Counter-Terrorism in Sahel : NATO COE-DAT Research Project\nAnkara, Törökország : Centre of Excellence Defence Against Terrorism (2025) 486 p. pp. 187-208. , 22 p.",
+  "venue": "NATO’s Regional Challenges : Terrorism and Counter-Terrorism in Sahel : NATO COE-DAT Research Project",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "36928212",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Kállai, Krisztina"
+  ],
+  "title": "Management of Humanitarian Operations and Situation in Sahel By Applying Resilience-Based Methods in Relation to Human Trafficking",
+  "source": "In: Besenyő, János (szerk.) NATO’s Regional Challenges : Terrorism and Counter-Terrorism in Sahel : NATO COE-DAT Research Project\nAnkara, Törökország : Centre of Excellence Defence Against Terrorism (2025) 486 p. pp. 421-438. , 18 p.",
+  "venue": "NATO’s Regional Challenges : Terrorism and Counter-Terrorism in Sahel : NATO COE-DAT Research Project",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "36928355",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Findings, Conclusions, Lessons Learned, and Recommendations for NATO",
+  "source": "In: Besenyő, János (szerk.) NATO’s Regional Challenges : Terrorism and Counter-Terrorism in Sahel : NATO COE-DAT Research Project\nAnkara, Törökország : Centre of Excellence Defence Against Terrorism (2025) 486 p. pp. 477-485. , 9 p.",
+  "venue": "NATO’s Regional Challenges : Terrorism and Counter-Terrorism in Sahel : NATO COE-DAT Research Project",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Műhelytanulmány része (Könyvrészlet)",
+  "mtmt_id": "36928358",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Darko, Trifunović",
+   "Iulian, Chifu",
+   "János, Besenyő",
+   "John, M. Nomikos",
+   "Juan, Cayón Peña",
+   "Rastislav, Kazanský",
+   "Shaul, Shay",
+   "Thomas, Wegener Friis"
+  ],
+  "title": "Analytical Intelligence Report: Nigerian Christians as Victims of Islamist Extremism (2025)",
+  "source": "International Institute for Relgious Freedom,",
+  "venue": "International Institute for Relgious Freedom,",
+  "year": 2025,
+  "type": "Egyéb",
+  "subtype": "Kutatási jelentés (közzétett) (Egyéb)",
+  "mtmt_id": "36625416",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Sikimic, Milicia"
+  ],
+  "title": "Police Role in the Security of Critical Infrastructure",
+  "source": "In: Kovács, Tünde Anna; Stadler, Róbert Gábor; Daruka, Norbert (szerk.) The Impact of the Energy Dependency on Critical Infrastructure Protection : Proceedings of the 5th International Conference on Central European Critical Infrastructure Protection (ICCECIP 2023), Budapest, Hungary\nCham, Svájc : Springer Nature Switzerland (2025) 765 p. pp. 567-575. Paper: Chapter 45 , 9 p.",
+  "venue": "The Impact of the Energy Dependency on Critical Infrastructure Protection : Proceedings of the 5th International Conference on Central European Critical Infrastructure Protection (ICCECIP 2023), Budapest, Hungary",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Konferenciaközlemény (Könyvrészlet)",
+  "mtmt_id": "35805894",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "András, Türke",
+   "Endre, Szénási"
+  ],
+  "title": "Wagner Group Private Military Company Volume 2. Establishment, Profile and Operations 2013-2023",
+  "source": "Warwick, Egyesült Királyság / Anglia : Helion & Company (2025)",
+  "venue": "Warwick, Egyesült Királyság / Anglia : Helion & Company",
+  "year": 2025,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "36107569",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Branislav, Todorović"
+  ],
+  "title": "Influence of security requirements to engineering in process industry",
+  "source": "In: SMEITS - SMEITS (szerk.) 38. Međunarodni kongres o procesnoj industriji\nOnline kiadás, Nemzetközi : Savez masinskih i elektrotehnickih inzenjera i tehnicara Srbije (SMEITS) (2025) pp. 191-198. Paper: https://izdanja.smeits.rs/index.php/ptk/article/view/8221/8459 , 8 p.",
+  "venue": "38. Međunarodni kongres o procesnoj industriji",
+  "year": 2025,
+  "type": "Könyvrészlet",
+  "subtype": "Konferenciaközlemény (Könyvrészlet)",
+  "mtmt_id": "36256514",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Nagy, Rudolf",
+   "Besenyő, János"
+  ],
+  "title": "Analyses of South Asia’s Arson Terror: Attacks in Light of Regional Characteristics",
+  "source": "SCIENTIFIC BULLETIN OF THE NICOLAE BALCESCU LAND FORCES ACADEMY 30 : 2 pp. 209-228. , 20 p. (2025)",
+  "venue": "SCIENTIFIC BULLETIN OF THE NICOLAE BALCESCU LAND FORCES ACADEMY 30 : 2 pp. 209-228.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "36424252",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Sinkó, Gábor",
+   "Besenyő, János"
+  ],
+  "title": "Somalia: In the Shadows of Former Intelligence Culture",
+  "source": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE , 20 p. (2025)",
+  "venue": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "36129342",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Sinkó, Gábor",
+   "Besenyő, János"
+  ],
+  "title": "The Diplomatic, Political and Economic Relations between Somalia and China from 1960 to 2020",
+  "source": "INTERNATIONAL CRITICAL THOUGHT 15 : 2 pp. 223-240. , 18 p. (2025)",
+  "venue": "INTERNATIONAL CRITICAL THOUGHT 15 : 2 pp. 223-240.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "36210574",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Stölczer, Kristóf",
+   "Szádeczky, Tamás",
+   "Besenyő, János"
+  ],
+  "title": "Africa's Energy Transition",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 5 : 1 pp. 21-35. , 15 p. (2025)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 5 : 1 pp. 21-35.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "36098866",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "Szűcs, Gábor",
+   "Barten, Dennis G.",
+   "Besenyő, János"
+  ],
+  "title": "Wastewater treatment systems and terrorism",
+  "source": "WATER SECURITY 24 pp. 1-8. Paper: 100187 , 8 p. (2025)",
+  "venue": "WATER SECURITY 24 pp. 1-8. Paper: 100187",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "35758653",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 7,
+   "independent": 7
+  }
+ },
+ {
+  "authors": [
+   "Trembeczki, Evelin",
+   "Tvaronaviciene, Manuela",
+   "Besenyő, János",
+   "Kobolka, István"
+  ],
+  "title": "Effects of the COVID-19 Crisis on Work-Life Balance, Mental Health, and Perceived Health Status Among Hungarian Defense Employees: A Cross-Sectional Study",
+  "source": "JOURNAL OF BUSINESS ECONOMICS AND MANAGEMENT 26 : 3 pp. 599-620. , 22 p. (2025)",
+  "venue": "JOURNAL OF BUSINESS ECONOMICS AND MANAGEMENT 26 : 3 pp. 599-620.",
+  "year": 2025,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "36136860",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "Besenyo, Janos"
+  ],
+  "title": "Foreword",
+  "source": "In: Issaev, Leonid; Zakharov, Andrey Federalism and Decentralization in Africa : Globalization and Fragmentation in Territorial Arrangements\nCham, Svájc : Springer Nature Switzerland (2024) 215 p. pp. v-vi. , 2 p.",
+  "venue": "Issaev, Leonid; Zakharov, Andrey Federalism and Decentralization in Africa : Globalization and Fragmentation in Territorial Arrangements",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Előszó, utószó (Könyvrészlet)",
+  "mtmt_id": "36367578",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Márton, Krisztina",
+   "Shaffer, Ryan"
+  ],
+  "title": "Hospital Attacks Since 9/11: An Analysis of Terrorism Targeting Healthcare Facilities and Workers",
+  "source": "STUDIES IN CONFLICT & TERRORISM 47 : 1 pp. 36-59. , 24 p. (2024)",
+  "venue": "STUDIES IN CONFLICT & TERRORISM 47 : 1 pp. 36-59.",
+  "year": 2024,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32082294",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 45,
+   "independent": 37
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Terrorist Threats to African Hospitals",
+  "source": "In: Kovács, Tünde Anna; Nyikes, Zoltán; Berek, Tamás; Daruka, Norbert; Tóth, László (szerk.) Critical Infrastructure Protection in the Light of the Armed Conflicts\nCham, Svájc : Springer Nature Switzerland (2024) 534 p. pp. 67-80. Paper: Chapter 7 , 14 p.",
+  "venue": "Critical Infrastructure Protection in the Light of the Armed Conflicts",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Konferenciaközlemény (Könyvrészlet)",
+  "mtmt_id": "34742027",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 3,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Kalo, Ottó"
+  ],
+  "title": "Illegal Migration into Europe, on the Western Mediterranean",
+  "source": "In: Cem, Karadeli (szerk.) Border Security In Contested Environments\nAnkara, Törökország : Centre of Excellence Defence Against Terrorism (2024) pp. 31-55. , 25 p.",
+  "venue": "Border Security In Contested Environments",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "34742916",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "The Ukrainian Conflict’s Impact on the Prevailing Causes of Radicalization in North Africa",
+  "source": "In: Korotayev, Andrey; Issaev, Leonid; Besenyő, János (szerk.) Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region\nCham, Svájc : Springer Nature Switzerland (2024) pp. 107-132. Paper: Chapter 6 , 26 p.",
+  "venue": "Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "34765296",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Sólyomfi, Andrea Hanna"
+  ],
+  "title": "Mali: Safe Heaven to Terrorist?",
+  "source": "In: Korotayev, Andrey; Issaev, Leonid; Besenyő, János (szerk.) Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region\nCham, Svájc : Springer Nature Switzerland (2024) pp. 153-167. Paper: Chapter 8 , 15 p.",
+  "venue": "Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "34765323",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 10,
+   "independent": 9
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Sinkó, Gábor"
+  ],
+  "title": "The Role of the Amniyat in Enforcing the Mandate of the Leadership and Silencing Dissent in Somalia",
+  "source": "In: Korotayev, Andrey; Issaev, Leonid; Besenyő, János (szerk.) Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region\nCham, Svájc : Springer Nature Switzerland (2024) pp. 401-418. Paper: Chapter 17 , 18 p.",
+  "venue": "Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "34765362",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 5,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Issaev, Leonid",
+   "Korotayev, Andrey"
+  ],
+  "title": "Introduction: Terrorism and Political Contention in North Africa and the Sahel Region",
+  "source": "In: Korotayev, Andrey; Issaev, Leonid; Besenyő, János (szerk.) Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region\nCham, Svájc : Springer Nature Switzerland (2024) pp. 1-17. Paper: Chapter 1 , 17 p.",
+  "venue": "Terrorism and Political Contention : New Perspectives on North Africa and the Sahel Region",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "34788408",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 9,
+   "independent": 5
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Schneider, Richárd"
+  ],
+  "title": "New Approaches Within the Peace Mission in Africa Using the Example of Uganda",
+  "source": "In: Käsehage, Nina (szerk.) Keeping Peace in Troubled Times : Perspectives from Different Disciplines on War and Peace\nCham, Svájc : Springer Nature Switzerland (2024) pp. 123-139. Paper: Chapter 8 , 17 p.",
+  "venue": "Keeping Peace in Troubled Times : Perspectives from Different Disciplines on War and Peace",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "34896866",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 3,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Sinkó, Gábor"
+  ],
+  "title": "Terrorist Organizations’ Activities Against Crucial Installations: Al-Shabaab’s Attacks on Critical Infrastructure in Kenya",
+  "source": "In: Besenyő, János; Khanyile, Moses B.; Vogel, David (szerk.) Terrorism and Counter-Terrorism in Modern Sub-Saharan Africa\nCham, Svájc : Springer Nature Switzerland (2024) pp. 169-193. Paper: Chapter 8 , 25 p.",
+  "venue": "Terrorism and Counter-Terrorism in Modern Sub-Saharan Africa",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "35134005",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 6,
+   "independent": 5
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János (szerk.)",
+   "Khanyile, Moses B. (szerk.)",
+   "Vogel, David (szerk.)"
+  ],
+  "title": "Terrorism and Counter-Terrorism in Modern Sub-Saharan Africa",
+  "source": "Cham, Svájc : Springer Nature Switzerland (2024)",
+  "venue": "Cham, Svájc : Springer Nature Switzerland",
+  "year": 2024,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "35134006",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 3,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Sinkó, Gábor"
+  ],
+  "title": "Challenges to National DRM Systems: Analyzing the Reactions of Al-Shabaab’s 2022 Attack on Hormuud Telecom in Somalia",
+  "source": "In: Kowalkowski, Stanisław; Kaźmierczak, Danuta; Paul, Salvin (szerk.) Civil Protection Systems and Disaster Governance : A Cross-Regional Approach\nCham, Svájc : Springer Nature Switzerland (2024) pp. 101-115. Paper: Chapter 6 , 15 p.",
+  "venue": "Civil Protection Systems and Disaster Governance : A Cross-Regional Approach",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "35137026",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Romaniuk, Scott N."
+  ],
+  "title": "Mali: comment l'insécurité, l'incertitude et le chaos favorisent le terrorisme",
+  "source": "The Conversation 15 : June 7 p. online (2024)",
+  "venue": "The Conversation 15 : June",
+  "year": 2024,
+  "type": "Folyóiratcikk",
+  "subtype": "Összefoglaló cikk (Folyóiratcikk)",
+  "mtmt_id": "35138962",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 7,
+   "independent": 7
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Szabó, Zsolt"
+  ],
+  "title": "Peacekeeping in Darfur: the AMIS. The mission of the African Union in Sudan, Darfur 2004-2007",
+  "source": "Warwick, Egyesült Királyság / Anglia : Helion & Company (2024) , 70 p.",
+  "venue": "Warwick, Egyesült Királyság / Anglia : Helion & Company",
+  "year": 2024,
+  "type": "Könyv",
+  "subtype": "Monográfia (Könyv)",
+  "mtmt_id": "35483216",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyo",
+   "András, István Türke",
+   "Endre, Szénási"
+  ],
+  "title": "Wagner Group - Private Military Company: Volume 1: Establishment, Purpose, Profile and Historic Relevance 2013-2023",
+  "source": "Warwick, Egyesült Királyság / Anglia : Helion & Company (2024)",
+  "venue": "Warwick, Egyesült Királyság / Anglia : Helion & Company",
+  "year": 2024,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "35594344",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 6,
+   "independent": 6
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "András, Málnássy"
+  ],
+  "title": "Geopolitical Dimension of Libyan Drone Warfare : The Use of Turkish Drones on the North African Battlefields",
+  "source": "OBRANA A STRATEGIE / DEFENCE AND STRATEGY 24 : 1 pp. 3-17. , 15 p. (2024)",
+  "venue": "OBRANA A STRATEGIE / DEFENCE AND STRATEGY 24 : 1 pp. 3-17.",
+  "year": 2024,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "35082018",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 17,
+   "independent": 16
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Gábor, Sinkó"
+  ],
+  "title": "The Role of the Amniyat in Aiding Al-Shabaab's Leadership Motivations (Somalia)",
+  "source": "In: Romaniuk, Scott N.; Roul, Animesh; Fabe, Amparo Pamela; Besenyő, János (szerk.) Handbook of terrorist and insurgent groups : a global survey of threats, tactics, and characteristics\nBoca Raton, Amerikai Egyesült Államok : CRC Press - Taylor and Francis Group (2024) 772 p. pp. 271-278. Paper: chapter 30 , 8 p.",
+  "venue": "Handbook of terrorist and insurgent groups : a global survey of threats, tactics, and characteristics",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "35423351",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Attila, Máté Kovács"
+  ],
+  "title": "The Importance of Security Awareness in the Healthcare Sector: Examination of Threat Vectors, Environmental Factors, and Opportunities for Mitigation",
+  "source": "In: Romaniuk, Scott N.; Roul, Animesh; Fabe, Amparo Pamela; Besenyő, János (szerk.) Handbook of terrorist and insurgent groups : a global survey of threats, tactics, and characteristics\nBoca Raton, Amerikai Egyesült Államok : CRC Press - Taylor and Francis Group (2024) 772 p. Paper: chapter 28 , 13 p.",
+  "venue": "Handbook of terrorist and insurgent groups : a global survey of threats, tactics, and characteristics",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Szaktanulmány (Könyvrészlet)",
+  "mtmt_id": "35423363",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "Korotayev, Andrey (szerk.)",
+   "Issaev, Leonid (szerk.)",
+   "Besenyő, János (szerk.)"
+  ],
+  "title": "Terrorism and Political Contention: New Perspectives on North Africa and the Sahel Region",
+  "source": "Cham, Svájc : Springer Nature Switzerland (2024)",
+  "venue": "Cham, Svájc : Springer Nature Switzerland",
+  "year": 2024,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "34765223",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "Romaniuk, Scott N.",
+   "Roul, Animesh",
+   "Fabe, Amparo Pamela",
+   "Besenyő, János"
+  ],
+  "title": "Introduction: The Contemporary Global Terrorism and Insurgency Landscape",
+  "source": "In: Romaniuk, Scott N.; Roul, Animesh; Fabe, Amparo Pamela; Besenyő, János (szerk.) Handbook of terrorist and insurgent groups : a global survey of threats, tactics, and characteristics\nBoca Raton, Amerikai Egyesült Államok : CRC Press - Taylor and Francis Group (2024) 772 p. pp. 1-4. , 4 p.",
+  "venue": "Handbook of terrorist and insurgent groups : a global survey of threats, tactics, and characteristics",
+  "year": 2024,
+  "type": "Könyvrészlet",
+  "subtype": "Előszó, utószó (Könyvrészlet)",
+  "mtmt_id": "35423380",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Romaniuk, Scott N. (szerk.)",
+   "Roul, Animesh (szerk.)",
+   "Fabe, Amparo Pamela (szerk.)",
+   "Besenyő, János (szerk.)"
+  ],
+  "title": "Handbook of terrorist and insurgent groups: a global survey of threats, tactics, and characteristics",
+  "source": "Boca Raton, Amerikai Egyesült Államok : CRC Press - Taylor and Francis Group (2024) , 772 p.",
+  "venue": "Boca Raton, Amerikai Egyesült Államok : CRC Press - Taylor and Francis Group",
+  "year": 2024,
+  "type": "Könyv",
+  "subtype": "Kézikönyv (Könyv)",
+  "mtmt_id": "35429677",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 7,
+   "independent": 7
+  }
+ },
+ {
+  "authors": [
+   "Sándor, Horváth",
+   "Béla, Szilágyi",
+   "János, Besenyő"
+  ],
+  "title": "Security challenges in humanitarian assistance",
+  "source": "Párizs, Franciaország : Éditions L'Harmattan (2024)",
+  "venue": "Párizs, Franciaország : Éditions L'Harmattan",
+  "year": 2024,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "34792277",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Sinkó, Gábor",
+   "Besenyő, János"
+  ],
+  "title": "Analyzing the evolution of the threat al-Shabaab poses to Kenya post-Westgate attack period",
+  "source": "COGENT SOCIAL SCIENCES 10 : 1 Paper: 2395656 , 16 p. (2024)",
+  "venue": "COGENT SOCIAL SCIENCES 10 : 1 Paper: 2395656",
+  "year": 2024,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "35200019",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 3,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "Sinkó, Gábor",
+   "Besenyő, János"
+  ],
+  "title": "A comprehensive analysis of al-Shabaab’s secret service, the Amniyat (Somalia).",
+  "source": "SOUTH AFRICAN JOURNAL OF INTERNATIONAL AFFAIRS 31 : 3 pp. 337-352. , 16 p. (2024)",
+  "venue": "SOUTH AFRICAN JOURNAL OF INTERNATIONAL AFFAIRS 31 : 3 pp. 337-352.",
+  "year": 2024,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "35636504",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "Wertz, Raphael",
+   "Stryckman, Benoit",
+   "Besenyő, János",
+   "Jasani, Gregory"
+  ],
+  "title": "A Comparative Study of Terrorist Attacks Targeting Healthcare in North America vs Europe",
+  "source": "DISASTER MEDICINE AND PUBLIC HEALTH PREPAREDNESS 18 Paper: e184 , 1 p. (2024)",
+  "venue": "DISASTER MEDICINE AND PUBLIC HEALTH PREPAREDNESS 18 Paper: e184",
+  "year": 2024,
+  "type": "Folyóiratcikk",
+  "subtype": "Absztrakt / Kivonat (Folyóiratcikk)",
+  "mtmt_id": "35501869",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyo, Janos"
+  ],
+  "title": "The Islamic State in Africa-The Emergence, Evolution, and Future of the Next Jihadist Battlefront",
+  "source": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 36 : 4 pp. 1352-1356. , 5 p. (2023)",
+  "venue": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 36 : 4 pp. 1352-1356.",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "33035630",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "MINURSO United Nations Mission for the Referendum in Western Sahara: Peace Operation Stalled in the Desert, 1991-2021",
+  "source": "Warwick, Egyesült Királyság / Anglia : Helion & Company (2023)",
+  "venue": "Warwick, Egyesült Királyság / Anglia : Helion & Company",
+  "year": 2023,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "33256499",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 4,
+   "independent": 4
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Military and Police Experiences from Western Sahara. The Case of Hungary",
+  "source": "In: János, Besenyő; Joseph, Huddleston; Yahia, H. Zoubir (szerk.) Conflict and Peace in Western Sahara : The Role of the UN's Peacekeeping Mission (MINURSO)\n[s.l.], Nemzetközi : Routledge, CRC Press (2023) 368 p. pp. 214-229. , 16 p.",
+  "venue": "Conflict and Peace in Western Sahara : The Role of the UN's Peacekeeping Mission (MINURSO)",
+  "year": 2023,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "33295100",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 12,
+   "independent": 12
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Pintér, Marcell György"
+  ],
+  "title": "The MINURSO Police Contingent",
+  "source": "In: János, Besenyő; Joseph, Huddleston; Yahia, H. Zoubir (szerk.) Conflict and Peace in Western Sahara : The Role of the UN's Peacekeeping Mission (MINURSO)\n[s.l.], Nemzetközi : Routledge, CRC Press (2023) 368 p. pp. 182-196. , 15 p.",
+  "venue": "Conflict and Peace in Western Sahara : The Role of the UN's Peacekeeping Mission (MINURSO)",
+  "year": 2023,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "33295103",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 7,
+   "independent": 7
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Somalia: A Battlefield of Intelligence Services",
+  "source": "In: Ryan, Shaffer (szerk.) The Handbook of African Intelligence Cultures\nLanham (MD), Amerikai Egyesült Államok : Rowman and Littlefield (2023) pp. 601-614. , 14 p.",
+  "venue": "The Handbook of African Intelligence Cultures",
+  "year": 2023,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "33630775",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 12,
+   "independent": 9
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Zimbabwe: An Intelligence Community against Each Other and Everyone",
+  "source": "In: Ryan, Shaffer (szerk.) The Handbook of African Intelligence Cultures\nLanham (MD), Amerikai Egyesült Államok : Rowman and Littlefield (2023) pp. 731-746. , 16 p.",
+  "venue": "The Handbook of African Intelligence Cultures",
+  "year": 2023,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "33630779",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 3,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Barten, Dennis G.",
+   "De Cauwer, Harald G.",
+   "Tin, Derrick",
+   "Gulyás, Attila"
+  ],
+  "title": "A Review of Ambulance Terrorism on the African Continent",
+  "source": "PREHOSPITAL AND DISASTER MEDICINE 38 : 2 pp. 237-242. , 6 p. (2023)",
+  "venue": "PREHOSPITAL AND DISASTER MEDICINE 38 : 2 pp. 237-242.",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Összefoglaló cikk (Folyóiratcikk)",
+  "mtmt_id": "33666874",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 23,
+   "independent": 19
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Sinkó, Gábor"
+  ],
+  "title": "The Challenges of Fighting Al-Shabaab in Southern Somalia pp. 14-18. , 5 p. (2023)",
+  "source": "NATO: Defence Against Terrorism Analysis Quarterly DATA-Q, Vol. 3., folyóiratcikk,",
+  "venue": "NATO: Defence Against Terrorism Analysis Quarterly DATA-Q, Vol. 3., folyóiratcikk,",
+  "year": 2023,
+  "type": "Egyéb",
+  "subtype": "Nem besorolt (Egyéb)",
+  "mtmt_id": "34845641",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Hegedűs, Éva"
+  ],
+  "title": "Countering Extremist Violence and Terrorism in Cabo Delgado",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 3 : 4 pp. 139-161. Paper: https://jceeas.bdi.uni-obuda.hu/index.php/jceeas/article/view/244/278 , 23 p. (2023)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 3 : 4 pp. 139-161. Paper: https://jceeas.bdi.uni-obuda.hu/index.php/jceeas/article/view/244/278",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "35081244",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 2,
+   "independent": 2
+  }
+ },
+ {
+  "authors": [
+   "Gábor, Sinkó",
+   "János, Besenyő"
+  ],
+  "title": "More than Survival: The Role of al-Shabaab Secret Service, Amniyat, in Information-Gathering",
+  "source": "CONNECTIONS: THE QUARTERLY JOURNAL 22 : 1 pp. 9-21. , 13 p. (2023)",
+  "venue": "CONNECTIONS: THE QUARTERLY JOURNAL 22 : 1 pp. 9-21.",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "34323872",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 10,
+   "independent": 7
+  }
+ },
+ {
+  "authors": [
+   "Gulyás, Attila",
+   "Demeter, Márton",
+   "Besenyő, Janos"
+  ],
+  "title": "The Lernaean Hydra on the internet: Deplatformization-resistant media ecosystem of the Islamic State",
+  "source": "MEDIA WAR AND CONFLICT 17 : 3 pp. 310-333. , 24 p. (2023)",
+  "venue": "MEDIA WAR AND CONFLICT 17 : 3 pp. 310-333.",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "34323240",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 6,
+   "independent": 4
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő (szerk.)",
+   "Joseph, Huddleston (szerk.)",
+   "Yahia, H. Zoubir (szerk.)"
+  ],
+  "title": "Conflict and Peace in Western Sahara: The Role of the UN's Peacekeeping Mission (MINURSO)",
+  "source": "[s.l.], Nemzetközi : Routledge, CRC Press (2023) , 368 p.",
+  "venue": "[s.l.], Nemzetközi : Routledge, CRC Press",
+  "year": 2023,
+  "type": "Könyv",
+  "subtype": "Szakkönyv (Könyv)",
+  "mtmt_id": "33206428",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 27,
+   "independent": 26
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Attila, Máté Kovács"
+  ],
+  "title": "Healthcare Cybersecurity Threat Context and Mitigation Opportunities",
+  "source": "Security Science Journal 4 : Number 1 (2023) pp. 83-101. Paper: https://zagrebsecurityforum.com/articles-securitysciencejournal/id/4280#.ZD0k33ZByUl , 19 p. (2023)",
+  "venue": "Security Science Journal 4 : Number 1 (2023) pp. 83-101. Paper: https://zagrebsecurityforum.com/articles-securitysciencejournal/id/4280#.ZD0k33ZByUl",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "33754548",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 20,
+   "independent": 20
+  }
+ },
+ {
+  "authors": [
+   "Romaniuk, Scott N.",
+   "Besenyő, János"
+  ],
+  "title": "Wagner Mercenaries: A Potential Lifeline for the Niger Junta",
+  "source": "GEOPOLITICAL MONITOR 2023 : August p. online (2023)",
+  "venue": "GEOPOLITICAL MONITOR 2023 : August p. online",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Összefoglaló cikk (Folyóiratcikk)",
+  "mtmt_id": "34875081",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 8,
+   "independent": 4
+  }
+ },
+ {
+  "authors": [
+   "Romaniuk, Scott N.",
+   "Besenyő, János"
+  ],
+  "title": "Wagner Mercenaries: A Potential Lifeline For The Niger Junta - Analysis",
+  "source": "Eurasia review journal 2023 : August p. online (2023)",
+  "venue": "Eurasia review journal 2023 : August p. online",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "34996802",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Shaffer, Ryan",
+   "Besenyő, János"
+  ],
+  "title": "Terrorism against healthcare facilities and workers in Africa: An assessment of attack modes, targets and locations",
+  "source": "AFRICAN SECURITY REVIEW 32 : 3 pp. 311-331. , 21 p. (2023)",
+  "venue": "AFRICAN SECURITY REVIEW 32 : 3 pp. 311-331.",
+  "year": 2023,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "34025814",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 15,
+   "independent": 15
+  }
+ },
+ {
+  "authors": [
+   "Besenyo, Janos"
+  ],
+  "title": "African Intelligence Services: Early Post-Colonial and Contemporary Challenges",
+  "source": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 37 : 1 pp. 379-384. , 6 p. (2022)",
+  "venue": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 37 : 1 pp. 379-384.",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "33035606",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Book review: US Policy towards Africa Eight Decades of Realpolitik",
+  "source": "In: Abdallah, Abdel-Ati Al-Naggar; Szilágyi, Ágnes Judit; Prantner, Zoltán (szerk.) From Iberia to China : Some Interactions of the Islamic World with the West and the East\nBudapest, Magyarország, Cairo, Egyiptom : ELTE BTK, Egyptian Academy for Printing & Translation & Publishing (EIA) (2022) 216 p. pp. 198-203. , 6 p.",
+  "venue": "From Iberia to China : Some Interactions of the Islamic World with the West and the East",
+  "year": 2022,
+  "type": "Könyvrészlet",
+  "subtype": "Recenzió/kritika (Könyvrészlet)",
+  "mtmt_id": "32621191",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Portugal’s Forgotten Overseas Wars in the 20th Century",
+  "source": "TERRORISM AND POLITICAL VIOLENCE 34 : 1 pp. 189-194. , 6 p. (2022)",
+  "venue": "TERRORISM AND POLITICAL VIOLENCE 34 : 1 pp. 189-194.",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32665909",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Málnássy, András"
+  ],
+  "title": "Future expansion and prospects of Turkish defense industry",
+  "source": "INSIGHTS INTO REGIONAL DEVELOPMENT 4 : Number 2 (June 2022) pp. 10-21. Paper: http://jssidoi.org/ird/article/95 , 12 p. (2022)",
+  "venue": "INSIGHTS INTO REGIONAL DEVELOPMENT 4 : Number 2 (June 2022) pp. 10-21. Paper: http://jssidoi.org/ird/article/95",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32865739",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 21,
+   "independent": 18
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Gulyas, Attila",
+   "Trifunovic, Darko"
+  ],
+  "title": "Hezbollah and the Internet in the Twenty-First Century",
+  "source": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 36 : 3 pp. 669-685. , 17 p. (2022)",
+  "venue": "INTERNATIONAL JOURNAL OF INTELLIGENCE AND COUNTERINTELLIGENCE 36 : 3 pp. 669-685.",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "33100254",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 18,
+   "independent": 16
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Sinkó, Gábor"
+  ],
+  "title": "Combating piracy strategically: Analysing the successes and challenges of NATO and EU interventions off the Somali coast",
+  "source": "SOUTH AFRICAN JOURNAL OF INTERNATIONAL AFFAIRS online pp. 1-15. , 15 p. (2022)",
+  "venue": "SOUTH AFRICAN JOURNAL OF INTERNATIONAL AFFAIRS online pp. 1-15.",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "33119811",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 29,
+   "independent": 26
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő"
+  ],
+  "title": "TERROR ATTACKS AGAINST AFRICAN HEALTH FACILITIES",
+  "source": "In: Florian, CÎRCIUMARU; Constantin-Crăișor, IONIȚĂ P R O C E E D I N G S: INTERNATIONAL SCIENTIFIC CONFERENCE STRATEGIES XXI - THE COMPLEX AND DYNAMIC NATURE OF THE SECURITY ENVIRONMENT\nBukarest, Románia : Carol I National Defence University Publishing House (2022) pp. 66-74. , 9 p.",
+  "venue": "Florian, CÎRCIUMARU; Constantin-Crăișor, IONIȚĂ P R O C E E D I N G S: INTERNATIONAL SCIENTIFIC CONFERENCE STRATEGIES XXI - THE COMPLEX AND DYNAMIC NATURE OF THE SECURITY ENVIRONMENT",
+  "year": 2022,
+  "type": "Egyéb konferenciaközlemény",
+  "subtype": "Konferenciaközlemény (Egyéb konferenciaközlemény)",
+  "mtmt_id": "32642471",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 7,
+   "independent": 5
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Marianna, Kármán"
+  ],
+  "title": "Changing Nigerian Migration Trends and its Hungarian Context",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 2 : Number 1 pp. 148-166. Paper: https://jceeas.bdi.uni-obuda.hu/index.php/jceeas/article/view/90/50 , 19 p. (2022)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 2 : Number 1 pp. 148-166. Paper: https://jceeas.bdi.uni-obuda.hu/index.php/jceeas/article/view/90/50",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "33019945",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 5,
+   "independent": 5
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő"
+  ],
+  "title": "Terrorist Threats to African Hospitals",
+  "source": "In: Nyikes, Zoltán; Kovács, Tünde Anna (szerk.) ICCECIP 2022 4th International Conference on Central European Critical Instrastructure Protection : Abstract Book\nBudapest, Magyarország : Óbudai Egyetem (2022) 56 p. p. 17 , 1 p.",
+  "venue": "ICCECIP 2022 4th International Conference on Central European Critical Instrastructure Protection : Abstract Book",
+  "year": 2022,
+  "type": "Egyéb konferenciaközlemény",
+  "subtype": "Absztrakt / Kivonat (Egyéb konferenciaközlemény)",
+  "mtmt_id": "33265500",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Péter, Gergó Juhász",
+   "Szilvia, Juhászné Veress",
+   "Csaba, Szeremley"
+  ],
+  "title": "Élelmiszer-önellátás és önellátásra hajlandósága eltérő lélekszámú településeken",
+  "source": "BIZTONSÁGTUDOMÁNYI SZEMLE 4 : 2 - Rajnai 60 különszám pp. 43-55. Paper: https://biztonsagtudomanyi.szemle.uni-obuda.hu/index.php/home/article/view/297/253 , 13 p. (2022)",
+  "venue": "BIZTONSÁGTUDOMÁNYI SZEMLE 4 : 2 - Rajnai 60 különszám pp. 43-55. Paper: https://biztonsagtudomanyi.szemle.uni-obuda.hu/index.php/home/article/view/297/253",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "33329709",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 3,
+   "independent": 3
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Moses, B Khanyile",
+   "Marianna, Kármán"
+  ],
+  "title": "Covid-19 Pandemia in Africa: Governmental, Organisational and Civil Measures",
+  "source": "In: Shadrack, B. Ramokgadi; Mbekezeli, C. Mkhize Reflections on the Complexities of the Covid-19 Pandemic: Perspectives from the Global South\nStellenbosch, Dél-Afrikai Köztársaság : African Sun Media (2022) pp. 19-49. , 31 p.",
+  "venue": "Shadrack, B. Ramokgadi; Mbekezeli, C. Mkhize Reflections on the Complexities of the Covid-19 Pandemic: Perspectives from the Global South",
+  "year": 2022,
+  "type": "Könyvrészlet",
+  "subtype": "Könyvfejezet (Könyvrészlet)",
+  "mtmt_id": "33693749",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Ráczkevy-Deák, Gabriella",
+   "Besenyő, János"
+  ],
+  "title": "Egészségügyi dolgozók ellen elkövetett erőszakos cselekedetek : Hazai tapasztalatok = Violence against healthcare workers br Hungarian experiences",
+  "source": "ORVOSI HETILAP 163 : 28 pp. 1112-1122. , 11 p. (2022)",
+  "venue": "ORVOSI HETILAP 163 : 28 pp. 1112-1122.",
+  "year": 2022,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "33018610",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 9,
+   "independent": 8
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Gulyás, Attila"
+  ],
+  "title": "The effect of the dark web on the security",
+  "source": "JOURNAL OF SECURITY AND SUSTAINABILITY ISSUES 11 : 1 pp. 103-121. , 19 p. (2021)",
+  "venue": "JOURNAL OF SECURITY AND SUSTAINABILITY ISSUES 11 : 1 pp. 103-121.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "31965382",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 29,
+   "independent": 28
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Book Review: Transforming US Intelligence for Irregular War: Task Force 714 in Iraq by Richard H. Shultz Jr.",
+  "source": "TERRORISM AND POLITICAL VIOLENCE & pp. 1-2. , 2 p. (2021)",
+  "venue": "TERRORISM AND POLITICAL VIOLENCE & pp. 1-2.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "31998752",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Another Showdown in Western Sahara?",
+  "source": "TERRORISM AND POLITICAL VIOLENCE 33 : 3 pp. 649-656. , 8 p. (2021)",
+  "venue": "TERRORISM AND POLITICAL VIOLENCE 33 : 3 pp. 649-656.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32001836",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 10,
+   "independent": 9
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Turkey’s growing interest in the African continent",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 1 : 1-2 pp. 70-89. , 20 p. (2021)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 1 : 1-2 pp. 70-89.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32110580",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 32,
+   "independent": 32
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "How many faces might migration have?A review of: “Two Faces of European Migration” by Viktor Glied",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 1 : 1-2 pp. 223-227. , 5 p. (2021)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 1 : 1-2 pp. 223-227.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "32110591",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Book Review: Religious Fundamentalism in the Age of Pandemic by Nina Käsehage",
+  "source": "TERRORISM AND POLITICAL VIOLENCE 33 : 5 pp. 1129-1130. , 2 p. (2021)",
+  "venue": "TERRORISM AND POLITICAL VIOLENCE 33 : 5 pp. 1129-1130.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "32114831",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Darfur Peacekeepers - The African Union peacekeeping mission in darfur (AMIS) from the perspective of a Hungarian military advisor",
+  "source": "Párizs, Franciaország : Éditions L'Harmattan (2021)",
+  "venue": "Párizs, Franciaország : Éditions L'Harmattan",
+  "year": 2021,
+  "type": "Könyv",
+  "subtype": "Monográfia (Könyv)",
+  "mtmt_id": "32158044",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 29,
+   "independent": 27
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Book review: Islam as Power - Shi‛i Revivalism in the Oeuvre of Muhammad Husayn Fadlallah by Bianka Speidl",
+  "source": "TERRORISM AND POLITICAL VIOLENCE 33 : 6 pp. 1352-1353. , 2 p. (2021)",
+  "venue": "TERRORISM AND POLITICAL VIOLENCE 33 : 6 pp. 1352-1353.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "32174087",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János",
+   "Sinkó, Gábor"
+  ],
+  "title": "The social media use of African terrorist organizations: a comparative study of Al-Qaeda in the Islamic Maghreb, Al-Shabaab and Boko Haram",
+  "source": "INSIGHTS INTO REGIONAL DEVELOPMENT 3 : 3 pp. 66-78. , 13 p. (2021)",
+  "venue": "INSIGHTS INTO REGIONAL DEVELOPMENT 3 : 3 pp. 66-78.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32236188",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 29,
+   "independent": 27
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Russia’s collaborations on nuclear energy with African countries",
+  "source": "BIZTONSÁGTUDOMÁNYI SZEMLE 3 : 1. különszám pp. 13-23. , 11 p. (2021)",
+  "venue": "BIZTONSÁGTUDOMÁNYI SZEMLE 3 : 1. különszám pp. 13-23.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32306297",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 1
+  }
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "Recenzió José E. Alvarez: The Spanish Foreign Legion in the Civil War 1936 című könyvéről",
+  "source": "BIZTONSÁGTUDOMÁNYI SZEMLE 3 : 4 pp. 133-137. , 5 p. (2021)",
+  "venue": "BIZTONSÁGTUDOMÁNYI SZEMLE 3 : 4 pp. 133-137.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "32535754",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "Horváth, Sándor",
+   "Besenyő, János",
+   "Szilágyi, Béla"
+  ],
+  "title": "Biztonsági kihívások a humanitárius segítségnyújtás során",
+  "source": "Budapest, Magyarország : Óbudai Egyetem, Bánki Donát Gépész és Biztonságtechnikai Mérnöki Kar (2021)",
+  "venue": "Budapest, Magyarország : Óbudai Egyetem, Bánki Donát Gépész és Biztonságtechnikai Mérnöki Kar",
+  "year": 2021,
+  "type": "Könyv",
+  "subtype": "Felsőoktatási tankönyv (Könyv)",
+  "mtmt_id": "32186833",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő"
+  ],
+  "title": "Hány arca lehet a migrációnak? Recenzió Glied Viktor az európai migráció két arca című könyvéről",
+  "source": "BIZTONSÁGTUDOMÁNYI SZEMLE 3 : 1 pp. 141-146. , 6 p. (2021)",
+  "venue": "BIZTONSÁGTUDOMÁNYI SZEMLE 3 : 1 pp. 141-146.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "31920965",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  }
+ },
+ {
+  "authors": [
+   "János, Besenyő",
+   "Sándor, Fülöp"
+  ],
+  "title": "Hand-made Austro-Hungarian Maps of the Rio de Oro Coast",
+  "source": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 1 : 4 pp. 138-155. , 18 p. (2021)",
+  "venue": "JOURNAL OF CENTRAL AND EASTERN EUROPEAN AFRICAN STUDIES 1 : 4 pp. 138-155.",
+  "year": 2021,
+  "type": "Folyóiratcikk",
+  "subtype": "Szakcikk (Folyóiratcikk)",
+  "mtmt_id": "32778503",
+  "doi": "",
+  "url": "",
+  "citations": {
+   "total": 1,
+   "independent": 0
+  }
+ }
+]</script>
+
+<section class="panel" id="admin" hidden>
+
+  <h2>Szerkesztés</h2>
+  <div id="auth"></div>
+  <div class="state" id="state">Betöltés...</div>
+
+  <div id="tools" hidden>
+    <div class="bar">
+      <button class="big" id="btnSave">Mentés</button>
+      <button class="ghost" id="btnReload">Frissítés a szerverről</button>
+      <button class="ghost" id="btnHistory">Korábbi változatok</button>
+      <button class="ghost" id="btnDoi">DOI-k keresése</button>
+    </div>
+
+    <h2>Új tételek beolvasása az MTMT listából</h2>
+    <p class="note">Nyissa meg az MTMT saját közleményjegyzékét, jelölje ki a lista szövegét, másolja ki, és illessze be ide. A már szereplő tételeket a rendszer felismeri és frissíti, nem hozza létre kétszer.</p>
+    <textarea id="raw" placeholder="Ide illessze be az MTMT listát"></textarea>
+    <div class="bar" style="margin-top:10px">
+      <button id="btnParse">Beolvasás</button>
+      <span class="note" id="parseMsg"></span>
+    </div>
+
+    <h2>Tételek</h2>
+    <div class="bar">
+      <button class="ghost" id="btnNew">Új tétel kézzel</button>
+    </div>
+    <div class="rows" id="rows"></div>
+
+    <h2>Kiválasztott tétel</h2>
+    <div id="form"><p class="note">Válasszon egy tételt a fenti listából.</p></div>
+  </div>
+</section>
+
+<script>
+/* ------------------------------------------------------------------
+   Beallitas. Ezt a negy sort kell kitolteni a repo adataival.
+------------------------------------------------------------------ */
+const CFG = {
+  owner : 'strategicmate',
+  repo  : 'publikaciok',       // ide a repo neve
+  branch: 'main',              // a fo ag neve
+  path  : 'index.html'         // ezt nem kell modositani
+};
+
+const API = `https://api.github.com/repos/${CFG.owner}/${CFG.repo}/contents/${CFG.path}`;
+const TOKEN_KEY = 'pubdb_token';
+
+const el = id => document.getElementById(id);
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const DB_OPEN  = '<script type="application/json" id="db">';
+const DB_CLOSE = '<\/script>';
+const DB_RE = new RegExp(DB_OPEN.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '[\\s\\S]*?<\\/script>');
+
+let DB      = JSON.parse(el('db').textContent || '[]');
+let baseHtml = '<!doctype html>\n' + document.documentElement.outerHTML;
+let sha      = null;
+let dirty    = false;
+let current  = null;
+let loadedCount = DB.length;
+
+/* ---------------- kozos megjelenites ---------------- */
+
+function buildFilters(){
+  const ys=[...new Set(DB.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a);
+  const ts=[...new Set(DB.map(p=>p.type).filter(Boolean))].sort();
+  const y=el('fYear').value, t=el('fType').value;
+  el('fYear').innerHTML='<option value="">Minden év</option>'+ys.map(v=>`<option>${v}</option>`).join('');
+  el('fType').innerHTML='<option value="">Minden típus</option>'+ts.map(v=>`<option>${esc(v)}</option>`).join('');
+  if(ys.includes(+y)) el('fYear').value=y;
+  if(ts.includes(t))  el('fType').value=t;
+}
+
+function filtered(){
+  const q=el('q').value.trim().toLowerCase(), y=el('fYear').value, t=el('fType').value;
+  const out=DB.filter(p=>{
+    if(y && String(p.year)!==y) return false;
+    if(t && p.type!==t) return false;
+    if(!q) return true;
+    return [p.title,p.source,p.venue,(p.authors||[]).join(' ')].join(' ').toLowerCase().includes(q);
+  });
+  const s=el('sort').value;
+  out.sort((a,b)=>{
+    if(s==='year-asc')  return (a.year||0)-(b.year||0);
+    if(s==='cit-desc')  return (b.citations?.total||0)-(a.citations?.total||0);
+    if(s==='title')     return String(a.title).localeCompare(String(b.title),'hu');
+    return (b.year||0)-(a.year||0);
+  });
+  return out;
+}
+
+function render(){
+  const rows=filtered();
+  const c=rows.reduce((n,p)=>n+(p.citations?.total||0),0);
+  const i=rows.reduce((n,p)=>n+(p.citations?.independent||0),0);
+  el('stats').textContent =
+    `${rows.length} tétel a ${DB.length} közül. Idéző összesen: ${c}, ebből független: ${i}.`;
+  if(!rows.length){
+    el('list').innerHTML='<li class="empty">Nincs megjeleníthető tétel.</li>';
+    return;
+  }
+  el('list').innerHTML=rows.map(p=>{
+    const link=p.doi?('https://doi.org/'+p.doi):(p.url||'');
+    const t=link?`<a href="${esc(link)}" target="_blank" rel="noopener">${esc(p.title)}</a>`:esc(p.title);
+    const ch=[];
+    if(p.subtype||p.type) ch.push(`<span class="chip">${esc(p.subtype||p.type)}</span>`);
+    if(p.citations?.total) ch.push(`<span class="chip cit">idéző ${p.citations.total} / független ${p.citations.independent||0}</span>`);
+    if(p.mtmt_id) ch.push(`<span class="chip">MTMT ${esc(p.mtmt_id)}</span>`);
+    return `<li class="pub">
+      <div class="yr">${esc(p.year||'')}</div>
+      <div class="ttl">${t}</div>
+      <div class="au">${esc((p.authors||[]).join(' ; '))}</div>
+      <div class="src">${esc(p.source||p.venue||'')}</div>
+      <div class="meta">${ch.join('')}</div></li>`;
+  }).join('');
+}
+
+/* ---------------- export ---------------- */
+
+function apa(p){
+  const a=(p.authors||[]).map(x=>{
+    const m=x.match(/^([^,]+),\s*(.+?)(\s*\(szerk\.\))?$/);
+    return m?(m[1].trim()+' '+m[2].trim()):x;
+  });
+  const au=a.length>1?(a.slice(0,-1).join(', ')+' & '+a[a.length-1]):(a[0]||'');
+  const src=(p.venue||p.source||'').replace(/\s*\n\s*/g,' ').trim();
+  let s=`${au} (${p.year||'n. a.'}). ${p.title}.`;
+  if(src) s+=` ${src}.`;
+  if(p.doi) s+=` https://doi.org/${p.doi}`;
+  else if(p.url) s+=` ${p.url}`;
+  return s.replace(/\.\./g,'.');
+}
+
+function bibtex(p){
+  const key=((p.authors||[])[0]||'x').split(/[ ,]/)[0].toLowerCase().replace(/[^a-z]/g,'')
+    +(p.year||'')+(p.mtmt_id||'').slice(-3);
+  const kind=/Folyóiratcikk/i.test(p.type||'')?'article'
+    :/Könyvrészlet/i.test(p.type||'')?'incollection'
+    :/Könyv/i.test(p.type||'')?'book':'misc';
+  const f=[['author',(p.authors||[]).join(' and ')],['title',p.title],['year',p.year],
+    [kind==='article'?'journal':'booktitle',p.venue||(p.source||'').split('\n')[0]],
+    ['doi',p.doi],['url',p.url],['note','MTMT '+(p.mtmt_id||'')]].filter(x=>x[1]);
+  return `@${kind}{${key},\n`+f.map(x=>`  ${x[0]} = {${x[1]}}`).join(',\n')+`\n}`;
+}
+
+function download(name,text,mime){
+  const u=URL.createObjectURL(new Blob([text],{type:mime||'text/plain;charset=utf-8'}));
+  const a=document.createElement('a'); a.href=u; a.download=name; a.click();
+  setTimeout(()=>URL.revokeObjectURL(u),2000);
+}
+
+/* ---------------- MTMT beolvaso ---------------- */
+
+/* Olyan sor, amely csak adatbazis-jelzeseket tartalmaz (DOI, Scopus, ISBN stb.) */
+const IND_TOK=/^(DOI|WoS|Scopus|PubMed|WorldCat|REAL|MATARKA|CorvinusKutatasok|ResearchGate|publ\.|Egyéb|URL|Teljes|dokumentum|ISBN:?|[0-9][0-9Xx-]{8,19})$/;
+const isIndicator = s => {
+  const p = s.split(/\s+/).filter(Boolean);
+  return p.length > 0 && p.every(x => IND_TOK.test(x));
+};
+/* Olyan sor, amely csak szogletes zarojeles cimkekbol all: [36177496] [Nyilvános] */
+const isTag = s => /^(\[[^\]]*\]\s*)+$/.test(s);
+
+function parseMTMT(text){
+  const lines=text.replace(/\r/g,'').split('\n').map(s=>s.trim());
+  const blocks=[]; let cur=null;
+  for(const ln of lines){
+    if(/^\d+\.$/.test(ln)){ if(cur) blocks.push(cur); cur=[]; continue; }
+    if(cur && ln) cur.push(ln);
+  }
+  if(cur) blocks.push(cur);
+
+  return blocks.map(b=>{
+    const r={authors:[],title:'',source:'',venue:'',year:null,type:'',subtype:'',
+             mtmt_id:'',doi:'',url:'',citations:{total:0,independent:0}};
+    let ti=-1;
+    b.forEach((ln,i)=>{
+      const id=ln.match(/\[(\d{6,})\]/); if(id && !r.mtmt_id) r.mtmt_id=id[1];
+      if(/\|\s*(Tudományos|Oktatási|Ismeretterjesztő|Közérdekű)/.test(ln) && ti<0){
+        ti=i; r.subtype=ln.split('|')[0].trim();
+        const par=r.subtype.match(/\(([^()]+)\)\s*$/); r.type=par?par[1]:r.subtype;
+      }
+      const c=ln.match(/Nyilvános idéző összesen:\s*(\d+)[^\d]+(\d+)/);
+      if(c){ r.citations.total=+c[1]; r.citations.independent=+c[2]; }
+    });
+    r.authors=(b[0]||'').split(';')
+      .map(s=>s.replace(/[✉☀-➿️]/g,'').replace(/\s+/g,' ').trim())
+      .filter(Boolean);
+    r.title=b[1]||'';
+    const src=b.slice(2, ti>0?ti:b.length).filter(l=>!isIndicator(l) && !isTag(l));
+    r.source=src.join('\n');
+    const ys=(r.source+' '+r.title).match(/\((1[89]\d{2}|20\d{2})\)/g);
+    if(ys) r.year=+ys[ys.length-1].replace(/[()]/g,'');
+    const f=src[0]||'';
+    if(/^In:/.test(f)){
+      const m=f.replace(/^In:\s*/,'').match(/\(szerk\.\)\s*(.+)$/);
+      r.venue=(m?m[1]:f.replace(/^In:\s*/,'')).trim();
+    } else {
+      r.venue=f.replace(/,?\s*\d+\s*p\..*$/,'').replace(/\s*\(\d{4}\)\s*$/,'').trim();
+    }
+    return r;
+  }).filter(r=>r.title);
+}
+
+/* ---------------- DOI kereses a Crossref adatbazisban ---------------- */
+
+const norm = s => String(s||'')
+  .normalize('NFD').replace(/[̀-ͯ]/g,'')
+  .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+
+function titleMatch(a,b){
+  const x=norm(a), y=norm(b);
+  if(!x || !y) return false;
+  if(x===y) return true;
+  const long=x.length>=y.length?x:y, short=x.length>=y.length?y:x;
+  if(long.startsWith(short) && short.length/long.length>=0.7) return true;
+  const A=new Set(x.split(' ').filter(w=>w.length>3));
+  const B=new Set(y.split(' ').filter(w=>w.length>3));
+  if(A.size<3 || B.size<3) return false;
+  let hit=0; A.forEach(w=>{ if(B.has(w)) hit++; });
+  return hit/Math.min(A.size,B.size) >= 0.85;
+}
+
+async function findDoi(rec){
+  const u='https://api.crossref.org/works?rows=3&select=DOI,title'
+    +'&query.bibliographic='+encodeURIComponent(rec.title.slice(0,200))
+    +'&mailto=attilamate.kovacs@gmail.com';
+  const r=await fetch(u);
+  if(!r.ok) return null;
+  const j=await r.json();
+  for(const it of (j.message?.items||[])){
+    const t=(it.title||[])[0];
+    if(t && titleMatch(rec.title, t)) return it.DOI;
+  }
+  return null;
+}
+
+let doiStop=false;
+
+async function enrichDoi(){
+  const todo=DB.filter(p=>!p.doi && p.title);
+  if(!todo.length){ setState('Minden tételhez tartozik már DOI, vagy nincs mit keresni.','ok'); return; }
+  if(!confirm(`${todo.length} tételhez keres DOI azonosítót. Ez néhány percig tarthat. Elindítja?`)) return;
+
+  doiStop=false;
+  const btn=el('btnDoi');
+  btn.textContent='Keresés leállítása';
+  btn.onclick=()=>{ doiStop=true; };
+
+  let found=0, done=0;
+  for(const p of todo){
+    if(doiStop) break;
+    try{
+      const d=await findDoi(p);
+      if(d){ p.doi=d; found++; setDirty(true); }
+    }catch(e){ /* halozati hiba eseten tovabblep */ }
+    done++;
+    setState(`DOI keresése: ${done} / ${todo.length} tétel átnézve, ${found} találat.`);
+    await new Promise(r=>setTimeout(r,180));
+  }
+  btn.textContent='DOI-k keresése';
+  btn.onclick=enrichDoi;
+  render(); renderRows(); renderForm();
+  setState(doiStop
+    ? `Keresés leállítva. ${found} DOI található meg. A mentéshez nyomja meg a Mentés gombot.`
+    : `Kész. ${found} DOI található meg ${todo.length} tételből. Ellenőrizze, majd nyomja meg a Mentés gombot.`,
+    found?'warn':'ok');
+}
+
+/* ---------------- GitHub reteg ---------------- */
+
+const token = () => localStorage.getItem(TOKEN_KEY) || '';
+
+function b64encode(str){
+  const bytes=new TextEncoder().encode(str);
+  let bin=''; const step=0x8000;
+  for(let i=0;i<bytes.length;i+=step) bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+step));
+  return btoa(bin);
+}
+function b64decode(s){
+  const bin=atob(String(s).replace(/\s/g,''));
+  const bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+function setState(msg,kind){
+  const n=el('state'); n.textContent=msg; n.className='state'+(kind?' '+kind:'');
+}
+function setDirty(v){
+  dirty=v;
+  el('btnSave').textContent = v ? 'Mentés (van mentetlen változás)' : 'Mentés';
+}
+
+async function ghGet(){
+  const h={'Accept':'application/vnd.github+json'};
+  if(token()) h.Authorization='Bearer '+token();
+  const r=await fetch(`${API}?ref=${encodeURIComponent(CFG.branch)}&t=${Date.now()}`,{headers:h});
+  if(!r.ok) throw new Error('A szerver nem adta vissza a fájlt. Hibakód: '+r.status);
+  const j=await r.json();
+  return {sha:j.sha, html:b64decode(j.content)};
+}
+
+async function loadFromServer(){
+  setState('Adatok betöltése a szerverről...');
+  try{
+    const g=await ghGet();
+    sha=g.sha; baseHtml=g.html;
+    const m=g.html.match(DB_RE);
+    if(!m) throw new Error('A szerveren lévő fájlban nem található az adatblokk.');
+    DB=JSON.parse(m[0].slice(DB_OPEN.length, -DB_CLOSE.length) || '[]');
+    loadedCount=DB.length;
+    current=null; setDirty(false);
+    buildFilters(); render(); renderRows(); renderForm();
+    setState(`Betöltve, ${DB.length} tétel. Szerkeszthet.`,'ok');
+  }catch(e){
+    renderRows(); renderForm();
+    setState('Nem sikerült betölteni a szerverről: '+e.message
+      +' A képernyőn látható adatok a megnyitáskori állapotot mutatják. Mentés előtt próbálja meg a Frissítés a szerverről gombot.','err');
+  }
+}
+
+async function saveToServer(){
+  if(!token()){ setState('Nincs megadva hozzáférési kulcs.','err'); return; }
+
+  if(DB.length===0 && loadedCount>0){
+    if(!confirm('A lista üres, a mentés minden tételt törölne. Biztosan menti?')) return;
+  } else if(loadedCount>4 && DB.length < loadedCount*0.7){
+    if(!confirm(`A lista ${loadedCount} tételről ${DB.length} tételre csökkent. Biztosan menti?`)) return;
+  }
+
+  el('btnSave').disabled=true;
+  setState('Mentés folyamatban...');
+  try{
+    const fresh=await ghGet();
+    if(sha && fresh.sha!==sha){
+      throw new Error('Időközben valaki más is mentett. Nyomja meg a Frissítés a szerverről gombot, majd végezze el újra a módosítást.');
+    }
+    const json=JSON.stringify(DB,null,1).replace(/<\//g,'<\\/');
+    const out=fresh.html.replace(DB_RE, () => DB_OPEN + json + DB_CLOSE);
+    if(out===fresh.html) throw new Error('Az adatblokk cseréje nem sikerült.');
+
+    const r=await fetch(API,{
+      method:'PUT',
+      headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+token(),
+               'Content-Type':'application/json'},
+      body:JSON.stringify({
+        message:`Publikációs lista frissítése (${DB.length} tétel)`,
+        content:b64encode(out), sha:fresh.sha, branch:CFG.branch
+      })
+    });
+    if(r.status===401 || r.status===403){
+      throw new Error('A hozzáférési kulcs érvénytelen vagy lejárt. Adjon meg újat a Kulcs cseréje gombbal.');
+    }
+    if(!r.ok){
+      const t=await r.text();
+      throw new Error('A mentés nem sikerült. Hibakód: '+r.status+'. '+t.slice(0,160));
+    }
+    const j=await r.json();
+    sha=j.content.sha; baseHtml=out; loadedCount=DB.length; setDirty(false);
+    setState(`Elmentve, ${DB.length} tétel. A nyilvános oldalon 1 vagy 2 perc múlva jelenik meg.`,'ok');
+  }catch(e){
+    setState(e.message,'err');
+  }finally{
+    el('btnSave').disabled=false;
+  }
+}
+
+/* ---------------- belepes ---------------- */
+
+function renderAuth(){
+  if(token()){
+    el('auth').innerHTML=`<div class="bar">
+      <span class="note">A hozzáférési kulcs el van mentve ebben a böngészőben.</span>
+      <button class="ghost" id="btnToken">Kulcs cseréje</button></div>`;
+    el('btnToken').onclick=()=>{
+      if(dirty && !confirm('Van mentetlen változás, ami elveszik. Folytatja?')) return;
+      localStorage.removeItem(TOKEN_KEY); location.reload();
+    };
+    el('tools').hidden=false;
+    return true;
+  }
+  el('auth').innerHTML=`<div class="setup">
+    <p class="note">A szerkesztéshez egyszer meg kell adni egy hozzáférési kulcsot. A böngésző megjegyzi, ezután nem kéri újra.</p>
+    <ol>
+      <li>Nyissa meg a github.com oldalt, és lépjen be.</li>
+      <li>Jobb felül a saját képére kattintva válassza a Settings menüpontot.</li>
+      <li>A bal oldali lista alján: Developer settings, majd Personal access tokens, azon belül Fine-grained tokens.</li>
+      <li>Generate new token. Név tetszőleges. Repository access: Only select repositories, és válassza ki a <code>${esc(CFG.repo)}</code> nevűt.</li>
+      <li>Permissions, Repository permissions, a Contents sorban állítsa be a Read and write értéket.</li>
+      <li>Generate token, majd másolja ki a kapott szöveget, és illessze be ide.</li>
+    </ol>
+    <div class="bar" style="margin-top:12px">
+      <input type="password" id="tok" placeholder="Illessze be ide a kulcsot" style="flex:1 1 320px">
+      <button id="btnTokSave">Mentés</button>
+    </div></div>`;
+  el('btnTokSave').onclick=()=>{
+    const v=el('tok').value.trim();
+    if(v.length<20){ setState('A megadott kulcs túl rövid, valószínűleg hiányos.','err'); return; }
+    localStorage.setItem(TOKEN_KEY,v); location.reload();
+  };
+  el('tools').hidden=true;
+  setState('A szerkesztéshez adja meg a hozzáférési kulcsot.','warn');
+  return false;
+}
+
+/* ---------------- szerkeszto ---------------- */
+
+function renderRows(){
+  el('rows').innerHTML = DB.length
+    ? DB.map((p,i)=>`<div class="row${i===current?' sel':''}" data-i="${i}">${esc(p.year||'')} &middot; ${esc(p.title).slice(0,95)}</div>`).join('')
+    : '<div class="row">Még nincs tétel a listában.</div>';
+  [...document.querySelectorAll('.row[data-i]')].forEach(r=>{
+    r.onclick=()=>{ current=+r.dataset.i; renderRows(); renderForm(); };
+  });
+}
+
+const FIELDS=[
+  ['title','Cím','textarea'],['authorsStr','Szerzők (pontosvesszővel)','textarea'],
+  ['year','Év','input'],['venue','Forrás neve','input'],
+  ['source','Teljes forrásadat','textarea'],['subtype','Típus (MTMT szerint)','input'],
+  ['type','Típuscsoport','input'],['doi','DOI','input'],['url','Hivatkozás','input'],
+  ['mtmt_id','MTMT azonosító','input'],
+  ['citTotal','Idéző összesen','input'],['citInd','Ebből független','input']
+];
+
+function renderForm(){
+  if(current==null || !DB[current]){
+    el('form').innerHTML='<p class="note">Válasszon egy tételt a fenti listából.</p>'; return;
+  }
+  const p=DB[current];
+  el('form').innerHTML=FIELDS.map(([k,label,tag])=>{
+    const v = k==='authorsStr' ? (p.authors||[]).join(' ; ')
+      : k==='citTotal' ? (p.citations?.total||0)
+      : k==='citInd'   ? (p.citations?.independent||0)
+      : (p[k]==null?'':p[k]);
+    return `<div class="grid"><label for="f_${k}">${label}</label>`+
+      (tag==='textarea'
+        ? `<textarea id="f_${k}">${esc(v)}</textarea>`
+        : `<input id="f_${k}" value="${esc(v)}">`)+`</div>`;
+  }).join('')+
+  `<div class="bar"><button id="btnApply">Módosítás elfogadása</button>
+   <button class="ghost" id="btnDel">Tétel törlése</button>
+   <span class="note">Az elfogadás után a Mentés gombbal kerül fel a szerverre.</span></div>`;
+
+  el('btnApply').onclick=()=>{
+    const g=k=>el('f_'+k).value.trim(), p=DB[current];
+    if(!g('title')){ setState('A cím nem maradhat üresen.','err'); return; }
+    p.title=g('title');
+    p.authors=g('authorsStr').split(';').map(s=>s.trim()).filter(Boolean);
+    p.year=g('year')?+g('year'):null;
+    p.venue=g('venue'); p.source=g('source');
+    p.subtype=g('subtype'); p.type=g('type');
+    p.doi=g('doi').replace(/^https?:\/\/(dx\.)?doi\.org\//,'');
+    p.url=g('url'); p.mtmt_id=g('mtmt_id');
+    p.citations={total:+g('citTotal')||0, independent:+g('citInd')||0};
+    setDirty(true); buildFilters(); render(); renderRows();
+    setState('A módosítás elfogadva. A mentéshez nyomja meg a Mentés gombot.','warn');
+  };
+  el('btnDel').onclick=()=>{
+    if(!confirm('Biztosan törli ezt a tételt?\n\n'+DB[current].title)) return;
+    DB.splice(current,1); current=null;
+    setDirty(true); buildFilters(); render(); renderRows(); renderForm();
+    setState('A tétel törölve. A mentéshez nyomja meg a Mentés gombot.','warn');
+  };
+}
+
+/* ---------------- esemenyek ---------------- */
+
+el('q').oninput=render; el('fYear').onchange=render;
+el('fType').onchange=render; el('sort').onchange=render;
+
+el('btnApa').onclick=()=>{
+  const by={}; filtered().forEach(p=>{ (by[p.year||'n. a.']||=[]).push(p); });
+  const out=Object.keys(by).sort((a,b)=>String(b).localeCompare(String(a)))
+    .map(y=>y+'\n\n'+by[y].map(apa).join('\n\n')).join('\n\n\n');
+  download('publikaciok-apa.txt',out);
+};
+el('btnBib').onclick=()=>download('publikaciok.bib',filtered().map(bibtex).join('\n\n'));
+
+let adminReady=false;
+
+function initAdmin(){
+  if(adminReady) return;
+  adminReady=true;
+  el('admin').hidden=false;
+
+  el('btnSave').onclick=saveToServer;
+  el('btnReload').onclick=()=>{
+    if(dirty && !confirm('Van mentetlen változás, ami elveszik. Folytatja?')) return;
+    loadFromServer();
+  };
+  el('btnHistory').onclick=()=>window.open(
+    `https://github.com/${CFG.owner}/${CFG.repo}/commits/${CFG.branch}/${CFG.path}`,'_blank');
+  el('btnDoi').onclick=enrichDoi;
+
+  el('btnParse').onclick=()=>{
+    const recs=parseMTMT(el('raw').value);
+    if(!recs.length){ el('parseMsg').textContent='Nem találtam feldolgozható tételt a beillesztett szövegben.'; return; }
+    let add=0,upd=0;
+    for(const r of recs){
+      const i=r.mtmt_id?DB.findIndex(x=>x.mtmt_id===r.mtmt_id):-1;
+      if(i>=0){ DB[i]=Object.assign({},DB[i],r); upd++; } else { DB.push(r); add++; }
+    }
+    setDirty(true); buildFilters(); render(); renderRows();
+    el('parseMsg').textContent=`${recs.length} tétel beolvasva. Új: ${add}, frissített: ${upd}.`;
+    setState('A beolvasás kész. A mentéshez nyomja meg a Mentés gombot.','warn');
+  };
+
+  el('btnNew').onclick=()=>{
+    DB.unshift({authors:[],title:'Új tétel',source:'',venue:'',year:new Date().getFullYear(),
+      type:'',subtype:'',mtmt_id:'',doi:'',url:'',citations:{total:0,independent:0}});
+    current=0; setDirty(true); renderRows(); renderForm(); render();
+  };
+
+  window.addEventListener('beforeunload',e=>{ if(dirty){ e.preventDefault(); e.returnValue=''; } });
+
+  renderRows(); renderForm();
+  el("admin").scrollIntoView({behavior:"smooth"});
+  if(renderAuth()) loadFromServer();
+}
+
+window.addEventListener('hashchange',()=>{ if(location.hash==='#admin') initAdmin(); });
+
+buildFilters(); render();
+if(location.hash==='#admin') initAdmin();
+</script>
+</body>
+</html>
