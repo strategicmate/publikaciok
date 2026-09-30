@@ -58,12 +58,28 @@ function EvSzam($a, $b) {
   return ([Math]::Abs([int]$a - [int]$b) -le 1)
 }
 
+$script:UA  = 'doi-kereso/1.1 (mailto:' + $Mail + ')'
+$script:Naplo = New-Object System.Collections.ArrayList
+
+function Kerdez([string]$url, [string]$forras) {
+  try {
+    return Invoke-RestMethod -Uri $url -TimeoutSec 30 -UserAgent $script:UA `
+             -Headers @{ 'Accept' = 'application/json' }
+  } catch {
+    $kod = ''
+    if ($_.Exception.Response) { $kod = [int]$_.Exception.Response.StatusCode }
+    $uz = "$forras" + $(if ($kod) { " HTTP $kod" }) + ': ' + $_.Exception.Message
+    [void]$script:Naplo.Add($uz)
+    throw
+  }
+}
+
 function FromOpenAlex($rec) {
   $t = $rec.title
   if ($t.Length -gt 250) { $t = $t.Substring(0, 250) }
   $u = 'https://api.openalex.org/works?per-page=3&select=doi,title,publication_year' +
        '&mailto=' + $Mail + '&search=' + [Uri]::EscapeDataString($t)
-  $j = Invoke-RestMethod -Uri $u -TimeoutSec 30
+  $j = Kerdez $u 'OpenAlex'
   foreach ($it in $j.results) {
     if (-not $it.doi) { continue }
     if (-not (TitleMatch $rec.title $it.title)) { continue }
@@ -83,7 +99,7 @@ function FromCrossref($rec) {
   if ($t.Length -gt 250) { $t = $t.Substring(0, 250) }
   $u = 'https://api.crossref.org/works?rows=3&select=DOI,title,issued' +
        '&mailto=' + $Mail + '&query.bibliographic=' + [Uri]::EscapeDataString($t)
-  $j = Invoke-RestMethod -Uri $u -TimeoutSec 30
+  $j = Kerdez $u 'Crossref'
   foreach ($it in $j.message.items) {
     $ct = $it.title | Select-Object -First 1
     if (-not $ct) { continue }
@@ -120,7 +136,7 @@ Write-Host ''
 # ---------------------------------------------------------------- kereses
 
 $talalatok = New-Object System.Collections.ArrayList
-$i = 0; $hiba = 0
+$i = 0; $hibaOA = 0; $hibaCR = 0
 
 foreach ($rec in $todo) {
   $i++
@@ -128,10 +144,10 @@ foreach ($rec in $todo) {
                  -PercentComplete ([int](100 * $i / $todo.Count))
 
   $hit = $null
-  try { $hit = FromOpenAlex $rec } catch { $hiba++ }
+  try { $hit = FromOpenAlex $rec } catch { $hibaOA++ }
   if (-not $hit) {
     Start-Sleep -Milliseconds 120
-    try { $hit = FromCrossref $rec } catch { $hiba++ }
+    try { $hit = FromCrossref $rec } catch { $hibaCR++ }
   }
 
   if ($hit) {
@@ -157,7 +173,19 @@ foreach ($rec in $todo) {
 
 Write-Progress -Activity 'DOI kereses' -Completed
 Write-Host ''
-Write-Host ("Kesz. {0} talalat {1} tetelbol. Halozati hiba: {2}" -f $talalatok.Count, $todo.Count, $hiba)
+$oa = @($talalatok | Where-Object { $_.Forras -eq 'OpenAlex' }).Count
+$cr = @($talalatok | Where-Object { $_.Forras -eq 'Crossref' }).Count
+Write-Host ("Kesz. {0} talalat {1} tetelbol." -f $talalatok.Count, $todo.Count)
+Write-Host ("  OpenAlex: {0} talalat, {1} hiba" -f $oa, $hibaOA)
+Write-Host ("  Crossref: {0} talalat, {1} hiba" -f $cr, $hibaCR)
+
+if ($script:Naplo.Count -gt 0) {
+  Write-Host ''
+  Write-Host 'Hibauzenetek (elteroek, legfeljebb 5):'
+  $script:Naplo | Select-Object -Unique | Select-Object -First 5 | ForEach-Object {
+    Write-Host ('  ' + $_)
+  }
+}
 
 if ($talalatok.Count -eq 0) { Write-Host 'Nincs mit menteni.'; return }
 
