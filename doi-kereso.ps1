@@ -62,15 +62,25 @@ $script:UA  = 'doi-kereso/1.1 (mailto:' + $Mail + ')'
 $script:Naplo = New-Object System.Collections.ArrayList
 
 function Kerdez([string]$url, [string]$forras) {
-  try {
-    return Invoke-RestMethod -Uri $url -TimeoutSec 30 -UserAgent $script:UA `
-             -Headers @{ 'Accept' = 'application/json' }
-  } catch {
-    $kod = ''
-    if ($_.Exception.Response) { $kod = [int]$_.Exception.Response.StatusCode }
-    $uz = "$forras" + $(if ($kod) { " HTTP $kod" }) + ': ' + $_.Exception.Message
-    [void]$script:Naplo.Add($uz)
-    throw
+  $varakozas = 800
+  for ($p = 1; $p -le 3; $p++) {
+    try {
+      return Invoke-RestMethod -Uri $url -TimeoutSec 30 -UserAgent $script:UA `
+               -Headers @{ 'Accept' = 'application/json' }
+    } catch {
+      $kod = 0
+      if ($_.Exception.Response) { $kod = [int]$_.Exception.Response.StatusCode }
+      $uz = "$forras" + $(if ($kod) { " HTTP $kod" }) + ': ' + $_.Exception.Message
+      # forgalomkorlat vagy atmeneti szerverhiba: varunk es ujraprobaljuk
+      if (($kod -eq 429 -or $kod -eq 500 -or $kod -eq 502 -or $kod -eq 503 -or $kod -eq 0) -and $p -lt 3) {
+        [void]$script:Naplo.Add("$uz  [ujraprobalas $p]")
+        Start-Sleep -Milliseconds $varakozas
+        $varakozas = $varakozas * 3
+        continue
+      }
+      [void]$script:Naplo.Add($uz)
+      throw
+    }
   }
 }
 
@@ -114,6 +124,7 @@ function FromCrossref($rec) {
 
 # ---------------------------------------------------------------- beolvasas
 
+Write-Host 'doi-kereso 1.2'
 $raw = "https://raw.githubusercontent.com/$Owner/$Repo/$Branch/$Path"
 Write-Host "Fajl letoltese: $raw"
 
