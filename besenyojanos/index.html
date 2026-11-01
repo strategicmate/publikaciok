@@ -35,7 +35,7 @@ li.pub{padding:16px 0;border-bottom:1px solid var(--line)}
 .meta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
 .chip{font:11px system-ui,sans-serif;background:var(--chip);padding:3px 8px;border-radius:2px;color:var(--muted)}
 .chip.cit{background:#f2e8e8;color:var(--accent)}
-.chip.sm{background:#e6efe9;color:var(--ok);font-weight:700}
+.chip.egyedi{background:#e6efe9;color:var(--ok);font-weight:700}
 .panel{max-width:1100px;margin:0 auto 60px;padding:20px;border-top:2px solid var(--fg)}
 .panel h2{font-size:19px;margin:22px 0 8px}
 textarea{width:100%;min-height:150px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
@@ -74,7 +74,7 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
     <select id="fSrc">
       <option value="">Minden forrás</option>
       <option value="mtmt">MTMT</option>
-      <option value="sm">StrategicMate találat</option>
+      <option value="egyedi">Egyedi keresésből</option>
     </select>
     <select id="sort">
       <option value="year-desc">Év szerint, csökkenő</option>
@@ -6007,7 +6007,7 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
    "total": 0,
    "independent": 0
   },
-  "sm": true
+  "egyedi": true
  },
  {
   "authors": [
@@ -6029,7 +6029,7 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
    "total": 0,
    "independent": 0
   },
-  "sm": true
+  "egyedi": true
  },
  {
   "authors": [
@@ -6051,7 +6051,7 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
    "total": 0,
    "independent": 0
   },
-  "sm": true
+  "egyedi": true
  },
  {
   "authors": [
@@ -6073,7 +6073,7 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
    "total": 0,
    "independent": 0
   },
-  "sm": true
+  "egyedi": true
  }
 ]</script>
 
@@ -6161,8 +6161,8 @@ function filtered(){
     if(p.hidden) return false;
     if(y && String(p.year)!==y) return false;
     if(t && p.type!==t) return false;
-    if(fs==='sm' && !p.sm) return false;
-    if(fs==='mtmt' && p.sm) return false;
+    if(fs==='egyedi' && !p.egyedi) return false;
+    if(fs==='mtmt' && p.egyedi) return false;
     if(!q) return true;
     return [p.title,p.source,p.venue,(p.authors||[]).join(' ')].join(' ').toLowerCase().includes(q);
   });
@@ -6182,10 +6182,10 @@ function render(){
   const i=rows.reduce((n,p)=>n+(p.citations?.independent||0),0);
   const shown=DB.filter(x=>!x.hidden).length;
   const held=DB.length-shown;
-  const smN=rows.filter(x=>x.sm).length;
+  const egyN=rows.filter(x=>x.egyedi).length;
   el('stats').textContent =
     `${rows.length} tétel a ${shown} közül. Idéző összesen: ${c}, ebből független: ${i}.`
-    + (smN ? ` Ebből saját kutatásból: ${smN}.` : '')
+    + (egyN ? ` Ebből egyedi keresésből: ${egyN}.` : '')
     + (held ? ` Tisztázásig visszatartva: ${held}.` : '');
   if(!rows.length){
     el('list').innerHTML='<li class="empty">Nincs megjeleníthető tétel.</li>';
@@ -6196,7 +6196,7 @@ function render(){
     const t=link?`<a href="${esc(link)}" target="_blank" rel="noopener">${esc(p.title)}</a>`:esc(p.title);
     const ch=[];
     if(p.subtype||p.type) ch.push(`<span class="chip">${esc(p.subtype||p.type)}</span>`);
-    if(p.sm) ch.push(`<span class="chip sm">StrategicMate találat</span>`);
+    if(p.egyedi) ch.push(`<span class="chip egyedi">Egyedi keresésből</span>`);
     if(p.citations?.total) ch.push(`<span class="chip cit">idéző ${p.citations.total} / független ${p.citations.independent||0}</span>`);
     if(p.isbn) ch.push(`<span class="chip">ISBN ${esc(p.isbn)}</span>`);
     if(p.mtmt_id) ch.push(`<span class="chip">MTMT ${esc(p.mtmt_id)}</span>`);
@@ -6558,7 +6558,7 @@ function renderAuth(){
 
 function renderRows(){
   el('rows').innerHTML = DB.length
-    ? DB.map((p,i)=>`<div class="row${i===current?' sel':''}" data-i="${i}">${p.hidden?'<b>[visszatartva]</b> ':''}${p.sm?'<b>[SM]</b> ':''}${esc(p.year||'')} &middot; ${esc(p.title).slice(0,95)}</div>`).join('')
+    ? DB.map((p,i)=>`<div class="row${i===current?' sel':''}" data-i="${i}">${p.hidden?'<b>[visszatartva]</b> ':''}${p.egyedi?'<b>[egyedi]</b> ':''}${esc(p.year||'')} &middot; ${esc(p.title).slice(0,95)}</div>`).join('')
     : '<div class="row">Még nincs tétel a listában.</div>';
   [...document.querySelectorAll('.row[data-i]')].forEach(r=>{
     r.onclick=()=>{ current=+r.dataset.i; renderRows(); renderForm(); };
@@ -6593,7 +6593,7 @@ function renderForm(){
     <textarea id="f_note">${esc(p.note||'')}</textarea></div>
    <div class="bar"><button id="btnApply">Módosítás elfogadása</button>
    <button class="ghost" id="btnHide">${p.hidden?'Visszatétel a listába':'Visszatartás a listából'}</button>
-   <button class="ghost" id="btnSm">${p.sm?'Saját találat jelölés levétele':'Megjelölés saját találatként'}</button>
+   <button class="ghost" id="btnSm">${p.egyedi?'Egyedi jelölés levétele':'Megjelölés egyedi keresésként'}</button>
    <button class="ghost" id="btnDel">Tétel törlése</button></div>
    <p class="note">${p.hidden
      ? 'Ez a tétel jelenleg nem jelenik meg a nyilvános listán, de az adat megmarad.'
@@ -6616,11 +6616,11 @@ function renderForm(){
   };
   el('btnSm').onclick=()=>{
     const p=DB[current];
-    if(p.sm) delete p.sm; else p.sm=true;
+    if(p.egyedi) delete p.egyedi; else p.egyedi=true;
     setDirty(true); render(); renderRows(); renderForm();
-    setState(p.sm
-      ? 'Megjelölve saját kutatásból származó találatként. A mentéshez nyomja meg a Mentés gombot.'
-      : 'A saját találat jelölés levéve. A mentéshez nyomja meg a Mentés gombot.','warn');
+    setState(p.egyedi
+      ? 'Megjelölve egyedi keresésből származó tételként. A mentéshez nyomja meg a Mentés gombot.'
+      : 'Az egyedi jelölés levéve. A mentéshez nyomja meg a Mentés gombot.','warn');
   };
   el('btnHide').onclick=()=>{
     const p=DB[current];
