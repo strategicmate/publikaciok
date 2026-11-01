@@ -35,6 +35,7 @@ li.pub{padding:16px 0;border-bottom:1px solid var(--line)}
 .meta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
 .chip{font:11px system-ui,sans-serif;background:var(--chip);padding:3px 8px;border-radius:2px;color:var(--muted)}
 .chip.cit{background:#f2e8e8;color:var(--accent)}
+.chip.sm{background:#e6efe9;color:var(--ok);font-weight:700}
 .panel{max-width:1100px;margin:0 auto 60px;padding:20px;border-top:2px solid var(--fg)}
 .panel h2{font-size:19px;margin:22px 0 8px}
 textarea{width:100%;min-height:150px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
@@ -70,6 +71,11 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
     <input type="search" id="q" placeholder="Keresés címben, szerzőben, forrásban">
     <select id="fYear"><option value="">Minden év</option></select>
     <select id="fType"><option value="">Minden típus</option></select>
+    <select id="fSrc">
+      <option value="">Minden forrás</option>
+      <option value="mtmt">MTMT</option>
+      <option value="sm">StrategicMate találat</option>
+    </select>
     <select id="sort">
       <option value="year-desc">Év szerint, csökkenő</option>
       <option value="year-asc">Év szerint, növekvő</option>
@@ -6000,7 +6006,8 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
   "citations": {
    "total": 0,
    "independent": 0
-  }
+  },
+  "sm": true
  },
  {
   "authors": [
@@ -6021,7 +6028,8 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
   "citations": {
    "total": 0,
    "independent": 0
-  }
+  },
+  "sm": true
  },
  {
   "authors": [
@@ -6042,7 +6050,30 @@ code{background:var(--chip);padding:1px 5px;border-radius:2px;font-size:13px}
   "citations": {
    "total": 0,
    "independent": 0
-  }
+  },
+  "sm": true
+ },
+ {
+  "authors": [
+   "Besenyő, János"
+  ],
+  "title": "How Should Wars Be Fought? Military Strategy vs Political Decisions",
+  "source": "CONTEMPORARY MILITARY CHALLENGES / SODOBNI VOJAŠKI IZZIVI 22 : 3 pp. 133-135. , 3 p. (2020)",
+  "venue": "CONTEMPORARY MILITARY CHALLENGES / SODOBNI VOJAŠKI IZZIVI 22 : 3 pp. 133-135.",
+  "year": 2020,
+  "type": "Folyóiratcikk",
+  "subtype": "Recenzió/kritika (Folyóiratcikk)",
+  "mtmt_id": "",
+  "doi": "10.33179/bsv.99.svi.11.cmc.22.3.rr",
+  "url": "",
+  "isbn": "",
+  "doi_source": "Crossref",
+  "note": "Nem szerepel az MTMT-ben. Crossref alapján azonosítva, 2026-11-01. Ha az MTMT-be felkerül, a rekordot az MTMT azonosítóval érdemes kiegészíteni.",
+  "citations": {
+   "total": 0,
+   "independent": 0
+  },
+  "sm": true
  }
 ]</script>
 
@@ -6114,19 +6145,24 @@ let loadedCount = DB.length;
 function buildFilters(){
   const ys=[...new Set(DB.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a);
   const ts=[...new Set(DB.map(p=>p.type).filter(Boolean))].sort();
+  const fsv=el('fSrc').value;
   const y=el('fYear').value, t=el('fType').value;
   el('fYear').innerHTML='<option value="">Minden év</option>'+ys.map(v=>`<option>${v}</option>`).join('');
   el('fType').innerHTML='<option value="">Minden típus</option>'+ts.map(v=>`<option>${esc(v)}</option>`).join('');
   if(ys.includes(+y)) el('fYear').value=y;
   if(ts.includes(t))  el('fType').value=t;
+  el('fSrc').value=fsv;
 }
 
 function filtered(){
   const q=el('q').value.trim().toLowerCase(), y=el('fYear').value, t=el('fType').value;
+  const fs=el('fSrc').value;
   const out=DB.filter(p=>{
     if(p.hidden) return false;
     if(y && String(p.year)!==y) return false;
     if(t && p.type!==t) return false;
+    if(fs==='sm' && !p.sm) return false;
+    if(fs==='mtmt' && p.sm) return false;
     if(!q) return true;
     return [p.title,p.source,p.venue,(p.authors||[]).join(' ')].join(' ').toLowerCase().includes(q);
   });
@@ -6146,8 +6182,10 @@ function render(){
   const i=rows.reduce((n,p)=>n+(p.citations?.independent||0),0);
   const shown=DB.filter(x=>!x.hidden).length;
   const held=DB.length-shown;
+  const smN=rows.filter(x=>x.sm).length;
   el('stats').textContent =
     `${rows.length} tétel a ${shown} közül. Idéző összesen: ${c}, ebből független: ${i}.`
+    + (smN ? ` Ebből saját kutatásból: ${smN}.` : '')
     + (held ? ` Tisztázásig visszatartva: ${held}.` : '');
   if(!rows.length){
     el('list').innerHTML='<li class="empty">Nincs megjeleníthető tétel.</li>';
@@ -6158,6 +6196,7 @@ function render(){
     const t=link?`<a href="${esc(link)}" target="_blank" rel="noopener">${esc(p.title)}</a>`:esc(p.title);
     const ch=[];
     if(p.subtype||p.type) ch.push(`<span class="chip">${esc(p.subtype||p.type)}</span>`);
+    if(p.sm) ch.push(`<span class="chip sm">StrategicMate találat</span>`);
     if(p.citations?.total) ch.push(`<span class="chip cit">idéző ${p.citations.total} / független ${p.citations.independent||0}</span>`);
     if(p.isbn) ch.push(`<span class="chip">ISBN ${esc(p.isbn)}</span>`);
     if(p.mtmt_id) ch.push(`<span class="chip">MTMT ${esc(p.mtmt_id)}</span>`);
@@ -6519,7 +6558,7 @@ function renderAuth(){
 
 function renderRows(){
   el('rows').innerHTML = DB.length
-    ? DB.map((p,i)=>`<div class="row${i===current?' sel':''}" data-i="${i}">${p.hidden?'<b>[visszatartva]</b> ':''}${esc(p.year||'')} &middot; ${esc(p.title).slice(0,95)}</div>`).join('')
+    ? DB.map((p,i)=>`<div class="row${i===current?' sel':''}" data-i="${i}">${p.hidden?'<b>[visszatartva]</b> ':''}${p.sm?'<b>[SM]</b> ':''}${esc(p.year||'')} &middot; ${esc(p.title).slice(0,95)}</div>`).join('')
     : '<div class="row">Még nincs tétel a listában.</div>';
   [...document.querySelectorAll('.row[data-i]')].forEach(r=>{
     r.onclick=()=>{ current=+r.dataset.i; renderRows(); renderForm(); };
@@ -6554,6 +6593,7 @@ function renderForm(){
     <textarea id="f_note">${esc(p.note||'')}</textarea></div>
    <div class="bar"><button id="btnApply">Módosítás elfogadása</button>
    <button class="ghost" id="btnHide">${p.hidden?'Visszatétel a listába':'Visszatartás a listából'}</button>
+   <button class="ghost" id="btnSm">${p.sm?'Saját találat jelölés levétele':'Megjelölés saját találatként'}</button>
    <button class="ghost" id="btnDel">Tétel törlése</button></div>
    <p class="note">${p.hidden
      ? 'Ez a tétel jelenleg nem jelenik meg a nyilvános listán, de az adat megmarad.'
@@ -6574,6 +6614,14 @@ function renderForm(){
     setDirty(true); buildFilters(); render(); renderRows();
     setState('A módosítás elfogadva. A mentéshez nyomja meg a Mentés gombot.','warn');
   };
+  el('btnSm').onclick=()=>{
+    const p=DB[current];
+    if(p.sm) delete p.sm; else p.sm=true;
+    setDirty(true); render(); renderRows(); renderForm();
+    setState(p.sm
+      ? 'Megjelölve saját kutatásból származó találatként. A mentéshez nyomja meg a Mentés gombot.'
+      : 'A saját találat jelölés levéve. A mentéshez nyomja meg a Mentés gombot.','warn');
+  };
   el('btnHide').onclick=()=>{
     const p=DB[current];
     p.hidden=!p.hidden;
@@ -6593,7 +6641,7 @@ function renderForm(){
 /* ---------------- esemenyek ---------------- */
 
 el('q').oninput=render; el('fYear').onchange=render;
-el('fType').onchange=render; el('sort').onchange=render;
+el('fType').onchange=render; el('fSrc').onchange=render; el('sort').onchange=render;
 
 el('btnApa').onclick=()=>{
   const by={}; filtered().forEach(p=>{ (by[p.year||'n. a.']||=[]).push(p); });
