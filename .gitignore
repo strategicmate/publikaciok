@@ -1,0 +1,7 @@
+# Python
+__pycache__/
+*.pyc
+
+# A DOI kereso futasankor keletkezo fajlok
+doi-jelentes-*.csv
+index-2*.html
